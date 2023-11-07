@@ -3,16 +3,16 @@ import axios, { AxiosError } from 'axios';
 import { UninterceptedApiError } from '@/types/api';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/v1',
+  baseURL: 'http://127.0.0.1:3000',
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false,
+  withCredentials: true,
 });
 
 api.interceptors.request.use(function (config) {
   const token = localStorage.getItem('token');
-  if (config.headers) {
+  if (token) {
     config.headers.Authorization = token ? `Bearer ${token}` : '';
   }
   return config;
