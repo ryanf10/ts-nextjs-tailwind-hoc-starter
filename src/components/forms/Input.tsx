@@ -60,7 +60,12 @@ export default function Input({
   return (
     <div className={containerClassName}>
       {withLabel && (
-        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+        <Typography
+          as='label'
+          variant='s3'
+          className='block dark:text-gray-300'
+          htmlFor={id}
+        >
           {label}
         </Typography>
       )}
@@ -90,7 +95,8 @@ export default function Input({
               'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
             LeftIcon && 'pl-9',
-            rightNode && 'pr-10'
+            rightNode && 'pr-10',
+            'dark:text-gray-500'
           )}
           placeholder={placeholder}
           aria-describedby={id}

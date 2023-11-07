@@ -49,12 +49,21 @@ function FormLogin() {
   return (
     <>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(handleLogin)}>
-          <Input label='Email' id='email' type='email' />
-          <PasswordInput label='Password' id='password' />
-          <Button type='submit' className='mt-5'>
-            Submit
-          </Button>
+        <form
+          onSubmit={handleSubmit(handleLogin)}
+          className='max-w-sm space-y-3'
+        >
+          <Input label='Email' id='email' type='email' placeholder='email' />
+          <PasswordInput
+            label='Password'
+            id='password'
+            placeholder='password'
+          />
+          <div className='text-center'>
+            <Button type='submit' className='mt-5'>
+              Submit
+            </Button>
+          </div>
         </form>
       </FormProvider>
     </>

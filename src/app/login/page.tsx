@@ -14,7 +14,8 @@ export default function RegisterPage() {
         <div
           className={clsx(
             'layout min-h-screen py-20',
-            'text-black dark:text-white'
+            'text-black dark:text-white',
+            'flex justify-center'
           )}
         >
           <FormLogin />

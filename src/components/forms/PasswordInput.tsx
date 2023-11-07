@@ -59,7 +59,12 @@ export default function PasswordInput({
   return (
     <div className={containerClassName}>
       {withLabel && (
-        <Typography as='label' variant='s3' className='block' htmlFor={id}>
+        <Typography
+          as='label'
+          variant='s3'
+          className='block dark:text-gray-300'
+          htmlFor={id}
+        >
           {label}
         </Typography>
       )}
@@ -79,7 +84,8 @@ export default function PasswordInput({
             'focus:border-primary-500 focus:ring-primary-500 border-gray-300',
             (readOnly || disabled) &&
               'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0',
-            error && 'border-red-500 focus:border-red-500 focus:ring-red-500'
+            error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+            'dark:text-gray-500'
           )}
           placeholder={placeholder}
           aria-describedby={id}
@@ -91,9 +97,9 @@ export default function PasswordInput({
           className='focus:ring-primary-500 absolute right-0 top-1/2 mr-3 flex -translate-y-1/2 items-center rounded-lg p-1 focus:outline-none focus:ring'
         >
           {showPassword ? (
-            <HiEyeOff className='text-typo-icons hover:text-typo-secondary cursor-pointer text-xl' />
+            <HiEyeOff className='text-typo-icons hover:text-typo-secondary cursor-pointer text-xl dark:text-gray-500' />
           ) : (
-            <HiEye className='text-typo-icons hover:text-typo-secondary cursor-pointer text-xl' />
+            <HiEye className='text-typo-icons hover:text-typo-secondary cursor-pointer text-xl dark:text-gray-500' />
           )}
         </button>
       </div>
