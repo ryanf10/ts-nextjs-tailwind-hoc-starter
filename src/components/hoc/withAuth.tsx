@@ -3,9 +3,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { ImSpinner8 } from 'react-icons/im';
+import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import axios from '@/lib/axios';
 import { getFromLocalStorage } from '@/lib/helper';
+
+import TextButton from '@/components/buttons/TextButton';
 
 import useAuthStore from '@/store/useAuthStore';
 
@@ -45,7 +48,8 @@ enum RouteRole {
  */
 export default function withAuth<T extends WithAuthProps = WithAuthProps>(
   Component: React.ComponentType<T>,
-  routeRole: keyof typeof RouteRole
+  routeRole: keyof typeof RouteRole,
+  allowedRoles?: Array<'admin' | 'user'>
 ) {
   const ComponentWithAuth = (props: Omit<T, keyof WithAuthProps>) => {
     const router = useRouter();
@@ -60,10 +64,12 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
     const logout = useAuthStore.useLogout();
     const stopLoading = useAuthStore.useStopLoading();
     const user = useAuthStore.useUser();
+    const role = useAuthStore.useRole();
     //#endregion  //*======== STORE ===========
 
     const checkAuth = React.useCallback(() => {
       const token = getFromLocalStorage('token');
+      const roleId = getFromLocalStorage('role');
       if (!token) {
         isAuthenticated && logout();
         stopLoading();
@@ -75,10 +81,21 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          login({
-            ...res.data.data,
-            token: token + '',
-          });
+          let tempRole = res.data.data.roles[0];
+          const roleItem = res.data.data.roles.find(
+            (item) => item.id == roleId
+          );
+          if (roleItem) {
+            tempRole = roleItem;
+          }
+
+          login(
+            {
+              ...res.data.data,
+              token: token + '',
+            },
+            tempRole
+          );
         } catch (err) {
           localStorage.removeItem('token');
         } finally {
@@ -121,6 +138,34 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
         }
       }
     }, [isAuthenticated, isLoading, redirect, router, user, pathName]);
+
+    if (!isLoading && isAuthenticated && routeRole == 'all') {
+      if (allowedRoles) {
+        const find = allowedRoles.some(
+          (allowedRole) => allowedRole == role?.name
+        );
+        if (!find) {
+          return (
+            <main>
+              <section className='bg-white'>
+                <div className='layout flex min-h-screen flex-col items-center justify-center text-center text-black'>
+                  <RiAlarmWarningFill
+                    size={60}
+                    className='drop-shadow-glow animate-flicker text-red-500'
+                  />
+                  <h1 className='mt-8 text-4xl md:text-6xl'>
+                    Oops, something went wrong!
+                  </h1>
+                  <TextButton variant='basic' className='mt-4'>
+                    Forbidden Access
+                  </TextButton>
+                </div>
+              </section>
+            </main>
+          );
+        }
+      }
+    }
 
     if (
       // If unauthenticated user want to access protected pages

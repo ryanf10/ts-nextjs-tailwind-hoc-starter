@@ -1,12 +1,11 @@
-import UserInfo from '@/components/private/UserInfo';
+'use client';
+import withAuth from '@/components/hoc/withAuth';
 
-export default function PrivatePage() {
+export default withAuth(PrivatePage, 'all', ['admin']);
+function PrivatePage() {
   return (
     <>
-      This is private{' '}
-      <>
-        <UserInfo />
-      </>
+      This is private <></>
     </>
   );
 }

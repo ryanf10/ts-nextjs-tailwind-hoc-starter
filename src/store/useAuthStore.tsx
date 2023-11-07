@@ -2,27 +2,39 @@ import { createSelectorHooks } from 'auto-zustand-selectors-hook';
 import produce from 'immer';
 import create from 'zustand';
 
+import { Role } from '@/types/role';
 import { AuthUser } from '@/types/user';
 
 type AuthStoreType = {
   user: AuthUser | null;
+  role: Role | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (user: AuthUser) => void;
+  login: (user: AuthUser, preferedRole?: Role) => void;
   logout: () => void;
   stopLoading: () => void;
 };
 
 const useAuthStoreBase = create<AuthStoreType>((set) => ({
   user: null,
+  role: null,
   isAuthenticated: false,
   isLoading: true,
-  login: (user) => {
+  login: (user, preferedRole) => {
     localStorage.setItem('token', user.token);
+    let tempRole = user.roles[0];
+    if (preferedRole) {
+      const roleItem = user.roles.find((item) => item == preferedRole);
+      if (roleItem) {
+        tempRole = roleItem;
+      }
+    }
+    localStorage.setItem('role', tempRole.id);
     set(
       produce<AuthStoreType>((state) => {
         state.isAuthenticated = true;
         state.user = user;
+        state.role = tempRole;
       })
     );
   },
@@ -32,6 +44,7 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
       produce<AuthStoreType>((state) => {
         state.isAuthenticated = false;
         state.user = null;
+        state.role = null;
       })
     );
   },
