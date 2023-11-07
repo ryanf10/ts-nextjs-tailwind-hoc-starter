@@ -5,7 +5,7 @@ import { ThemeProvider } from 'next-themes';
 import React from 'react';
 
 import Dialog from '@/components/dialog/Dialog';
-import DismissableToast from '@/components/toast/DismissableToast';
+import DismissibleToast from '@/components/toast/DismissibleToast';
 const queryClient = new QueryClient({});
 function Providers({ children }: React.PropsWithChildren) {
   return (
@@ -18,7 +18,7 @@ function Providers({ children }: React.PropsWithChildren) {
       >
         {children}
 
-        <DismissableToast />
+        <DismissibleToast />
         <Dialog />
       </ThemeProvider>
     </QueryClientProvider>

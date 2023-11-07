@@ -4,7 +4,7 @@ import * as React from 'react';
 import { toast, ToastBar, Toaster } from 'react-hot-toast';
 import { HiX } from 'react-icons/hi';
 
-export default function DismissableToast() {
+export default function DismissibleToast() {
   return (
     <div>
       <Toaster
