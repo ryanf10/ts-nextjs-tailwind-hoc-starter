@@ -24,6 +24,7 @@ import Alert from '@/components/alert/Alert';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import TextButton from '@/components/buttons/TextButton';
+import ToggleThemeButton from '@/components/buttons/ToggleThemeButton';
 import ArrowLink from '@/components/links/ArrowLink';
 import ButtonLink from '@/components/links/ButtonLink';
 import PrimaryLink from '@/components/links/PrimaryLink';
@@ -48,13 +49,7 @@ type LoginData = {
   password: string;
 };
 export default function ComponentPage() {
-  const [mode, setMode] = React.useState<'dark' | 'light'>('light');
   const [color, setColor] = React.useState<Color>('sky');
-  function toggleMode() {
-    return mode === 'dark' ? setMode('light') : setMode('dark');
-  }
-
-  const textColor = mode === 'dark' ? 'text-gray-300' : 'text-gray-600';
   const dialog = useDialog();
 
   const openSuccess = () => {
@@ -120,13 +115,11 @@ export default function ComponentPage() {
   );
   return (
     <main>
-      <section
-        className={clsx(mode === 'dark' ? 'bg-dark' : 'bg-white', color)}
-      >
+      <section className={clsx('dark:bg-dark bg-white', color)}>
         <div
           className={clsx(
             'layout min-h-screen py-20',
-            mode === 'dark' ? 'text-white' : 'text-black'
+            'text-black dark:text-white'
           )}
         >
           <h1>Built-in Components</h1>
@@ -135,19 +128,19 @@ export default function ComponentPage() {
           </ArrowLink>
 
           <div className='mt-8 flex flex-wrap gap-2'>
-            <Button
-              onClick={toggleMode}
-              variant={mode === 'dark' ? 'light' : 'dark'}
-            >
-              Set to {mode === 'dark' ? 'light' : 'dark'}
-            </Button>
+            <ToggleThemeButton />
             {/* <Button onClick={randomize}>Randomize CSS Variable</Button> */}
           </div>
 
           <ol className='mt-8 space-y-6'>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Customize Colors</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 You can change primary color to any Tailwind CSS colors. See
                 globals.css to change your color.
               </p>
@@ -158,9 +151,7 @@ export default function ComponentPage() {
                   value={color}
                   className={clsx(
                     'block max-w-xs rounded',
-                    mode === 'dark'
-                      ? 'bg-dark border border-gray-600'
-                      : 'border-gray-300 bg-white',
+                    'dark:bg-dark border-gray-300 bg-white dark:border dark:border-gray-600',
                     'focus:border-primary-400 focus:ring-primary-400 focus:outline-none focus:ring'
                   )}
                   onChange={(e) => setColor(e.target.value as Color)}
@@ -213,7 +204,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>UnstyledLink</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 No style applied, differentiate internal and outside links, give
                 custom cursor for outside links.
               </p>
@@ -226,7 +222,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>PrimaryLink</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Add styling on top of UnstyledLink, giving a primary color to
                 the link.
               </p>
@@ -239,7 +240,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>UnderlineLink</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Add styling on top of UnstyledLink, giving a dotted and animated
                 underline.
               </p>
@@ -252,7 +258,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>ArrowLink</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Useful for indicating navigation, I use this quite a lot, so why
                 not build a component with some whimsy touch?
               </p>
@@ -280,7 +291,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>ButtonLink</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Button styled link with 3 variants.
               </p>
               <div className='flex flex-wrap gap-2'>
@@ -292,14 +308,12 @@ export default function ComponentPage() {
                 </ButtonLink>
                 <ButtonLink
                   variant='outline'
-                  isDarkBg={mode === 'dark'}
                   href='https://theodorusclarence.com'
                 >
                   Outline Variant
                 </ButtonLink>
                 <ButtonLink
                   variant='ghost'
-                  isDarkBg={mode === 'dark'}
                   href='https://theodorusclarence.com'
                 >
                   Ghost Variant
@@ -317,17 +331,18 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Button</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Ordinary button with style.
               </p>
               <div className='flex flex-wrap gap-2'>
                 <Button variant='primary'>Primary Variant</Button>
-                <Button variant='outline' isDarkBg={mode === 'dark'}>
-                  Outline Variant
-                </Button>
-                <Button variant='ghost' isDarkBg={mode === 'dark'}>
-                  Ghost Variant
-                </Button>
+                <Button variant='outline'>Outline Variant</Button>
+                <Button variant='ghost'>Ghost Variant</Button>
                 <Button variant='dark'>Dark Variant</Button>
                 <Button variant='light'>Light Variant</Button>
               </div>
@@ -343,16 +358,10 @@ export default function ComponentPage() {
                   variant='outline'
                   leftIcon={Plus}
                   rightIcon={ArrowRight}
-                  isDarkBg={mode === 'dark'}
                 >
                   Icon
                 </Button>
-                <Button
-                  variant='ghost'
-                  leftIcon={Plus}
-                  rightIcon={ArrowRight}
-                  isDarkBg={mode === 'dark'}
-                >
+                <Button variant='ghost' leftIcon={Plus} rightIcon={ArrowRight}>
                   Icon
                 </Button>
                 <Button variant='dark' leftIcon={Plus} rightIcon={ArrowRight}>
@@ -366,10 +375,10 @@ export default function ComponentPage() {
                 <Button size='sm' variant='primary'>
                   Small Size
                 </Button>
-                <Button size='sm' variant='outline' isDarkBg={mode === 'dark'}>
+                <Button size='sm' variant='outline'>
                   Small Size
                 </Button>
-                <Button size='sm' variant='ghost' isDarkBg={mode === 'dark'}>
+                <Button size='sm' variant='ghost'>
                   Small Size
                 </Button>
                 <Button size='sm' variant='dark'>
@@ -393,7 +402,6 @@ export default function ComponentPage() {
                   variant='outline'
                   leftIcon={Plus}
                   rightIcon={ArrowRight}
-                  isDarkBg={mode === 'dark'}
                 >
                   Icon
                 </Button>
@@ -402,7 +410,6 @@ export default function ComponentPage() {
                   variant='ghost'
                   leftIcon={Plus}
                   rightIcon={ArrowRight}
-                  isDarkBg={mode === 'dark'}
                 >
                   Icon
                 </Button>
@@ -429,10 +436,10 @@ export default function ComponentPage() {
                 <Button disabled variant='primary'>
                   Disabled
                 </Button>
-                <Button disabled variant='outline' isDarkBg={mode === 'dark'}>
+                <Button disabled variant='outline'>
                   Disabled
                 </Button>
-                <Button disabled variant='ghost' isDarkBg={mode === 'dark'}>
+                <Button disabled variant='ghost'>
                   Disabled
                 </Button>
                 <Button disabled variant='dark'>
@@ -446,10 +453,10 @@ export default function ComponentPage() {
                 <Button isLoading variant='primary'>
                   Disabled
                 </Button>
-                <Button isLoading variant='outline' isDarkBg={mode === 'dark'}>
+                <Button isLoading variant='outline'>
                   Disabled
                 </Button>
-                <Button isLoading variant='ghost' isDarkBg={mode === 'dark'}>
+                <Button isLoading variant='ghost'>
                   Disabled
                 </Button>
                 <Button isLoading variant='dark'>
@@ -462,7 +469,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>TextButton</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Button with a text style
               </p>
               <div className='space-x-2'>
@@ -472,7 +484,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>IconButton</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Button with only icon inside
               </p>
               <div className='space-x-2'>
@@ -485,7 +502,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Custom 404 Page</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Styled 404 page with some animation.
               </p>
               <div className='flex flex-wrap gap-2'>
@@ -494,7 +516,12 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Next Image</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Next Image with default props and skeleton animation
               </p>
               <NextImage
@@ -508,14 +535,26 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Skeleton</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
                 Skeleton with shimmer effect
               </p>
               <Skeleton className='h-72 w-72' />
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Alert</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>Alert Variant</p>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
+                Alert Variant
+              </p>
               <Alert>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
                 velit.
@@ -541,7 +580,14 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Dialog</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>Dialog Variant</p>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
+                Dialog Variant
+              </p>
               <div className='flex flex-col items-start space-y-3'>
                 <Button onClick={openSuccess}>Success Alert</Button>
                 <Button onClick={openWarning}>Warning Alert</Button>
@@ -551,7 +597,14 @@ export default function ComponentPage() {
             </li>
             <li className='space-y-2'>
               <h2 className='text-lg md:text-xl'>Toast</h2>
-              <p className={clsx('!mt-1 text-sm', textColor)}>Toast Variant</p>
+              <p
+                className={clsx(
+                  '!mt-1 text-sm',
+                  'text-gray-600 dark:text-gray-300'
+                )}
+              >
+                Toast Variant
+              </p>
               <div className='flex flex-col items-start space-y-3'>
                 <div className='mt-4 flex flex-wrap gap-3'>
                   <Button onClick={() => toast.success('Hello!')}>
