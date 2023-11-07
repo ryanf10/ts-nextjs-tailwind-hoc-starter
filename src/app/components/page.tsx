@@ -1,5 +1,7 @@
 'use client';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import {
   ArrowRight,
@@ -10,7 +12,15 @@ import {
   Shield,
 } from 'lucide-react';
 import React from 'react';
+import toast from 'react-hot-toast';
 
+import apiMock, { mockQuery } from '@/lib/axios-mock';
+import logger from '@/lib/logger';
+import useMutationToast from '@/hooks/toast/useMutationToast';
+import useQueryToast from '@/hooks/toast/useQueryToast';
+import useDialog from '@/hooks/useDialog';
+
+import Alert from '@/components/alert/Alert';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import TextButton from '@/components/buttons/TextButton';
@@ -21,9 +31,22 @@ import UnderlineLink from '@/components/links/UnderlineLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import NextImage from '@/components/NextImage';
 import Skeleton from '@/components/Skeleton';
+import Typography from '@/components/typography/Typography';
+
+import { ApiError, ApiResponse } from '@/types/api';
 
 type Color = (typeof colorList)[number];
 
+type User = {
+  id: number;
+  name: string;
+  token: string;
+};
+
+type LoginData = {
+  email: string;
+  password: string;
+};
 export default function ComponentPage() {
   const [mode, setMode] = React.useState<'dark' | 'light'>('light');
   const [color, setColor] = React.useState<Color>('sky');
@@ -32,7 +55,69 @@ export default function ComponentPage() {
   }
 
   const textColor = mode === 'dark' ? 'text-gray-300' : 'text-gray-600';
+  const dialog = useDialog();
 
+  const openSuccess = () => {
+    dialog({
+      title: 'Success title',
+      description: 'Success description whatever you want',
+      submitText: 'Hurray',
+      variant: 'success',
+      catchOnCancel: true,
+    })
+      .then(() => logger('accept'))
+      .catch(() => logger('reject'));
+  };
+
+  const openWarning = () => {
+    dialog({
+      title: 'Warning title !!!',
+      description: 'Warning description whatever you want',
+      submitText: 'Sure',
+      variant: 'warning',
+      catchOnCancel: true,
+    })
+      .then(() => logger('accept'))
+      .catch(() => logger('reject'));
+  };
+  const openDanger = () => {
+    dialog({
+      title: "Danger action! Don't do it",
+      description: 'Danger description, are you sure?',
+      submitText: 'Do it',
+      variant: 'danger',
+      catchOnCancel: true,
+    })
+      .then(() => logger('accept'))
+      .catch(() => logger('reject'));
+  };
+
+  const openNested = () => {
+    dialog({
+      title: 'Warning title !!!',
+      description: 'Warning description whatever you want',
+      submitText: 'Sure',
+      variant: 'warning',
+      catchOnCancel: true,
+    })
+      .then(() => {
+        logger('accept');
+        openDanger();
+      })
+      .catch(() => logger('reject'));
+  };
+
+  const {
+    data: mutationData,
+    isLoading,
+    mutate,
+  } = useMutationToast<ApiResponse<undefined>, LoginData>(
+    useMutation((data) => apiMock.post('/login', data).then((res) => res.data))
+  );
+
+  const { data: queryData } = useQueryToast(
+    useQuery<ApiResponse<User>, AxiosError<ApiError>>(['/me'], mockQuery)
+  );
   return (
     <main>
       <section
@@ -427,6 +512,87 @@ export default function ComponentPage() {
                 Skeleton with shimmer effect
               </p>
               <Skeleton className='h-72 w-72' />
+            </li>
+            <li className='space-y-2'>
+              <h2 className='text-lg md:text-xl'>Alert</h2>
+              <p className={clsx('!mt-1 text-sm', textColor)}>Alert Variant</p>
+              <Alert>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
+                velit.
+              </Alert>
+              <Alert variant='secondary'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
+                velit.
+              </Alert>
+              <Alert variant='danger'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
+                velit.
+              </Alert>
+              <Alert variant='warning'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit,
+                velit.
+              </Alert>
+              <Alert variant='success'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Quaerat, maiores pariatur eaque laboriosam voluptates est cum
+                repudiandae facilis ipsam doloribus porro, dolore fugit officiis
+                sequi neque possimus. Ipsa, expedita possimus!
+              </Alert>
+            </li>
+            <li className='space-y-2'>
+              <h2 className='text-lg md:text-xl'>Dialog</h2>
+              <p className={clsx('!mt-1 text-sm', textColor)}>Dialog Variant</p>
+              <div className='flex flex-col items-start space-y-3'>
+                <Button onClick={openSuccess}>Success Alert</Button>
+                <Button onClick={openWarning}>Warning Alert</Button>
+                <Button onClick={openDanger}>Danger Alert</Button>
+                <Button onClick={openNested}>Nested Dialog</Button>
+              </div>
+            </li>
+            <li className='space-y-2'>
+              <h2 className='text-lg md:text-xl'>Toast</h2>
+              <p className={clsx('!mt-1 text-sm', textColor)}>Toast Variant</p>
+              <div className='flex flex-col items-start space-y-3'>
+                <div className='mt-4 flex flex-wrap gap-3'>
+                  <Button onClick={() => toast.success('Hello!')}>
+                    Success
+                  </Button>
+                  <Button
+                    onClick={() => toast.error('Oops! Something went wrong')}
+                  >
+                    Error
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      toast.loading('Loading...', {
+                        duration: 4000,
+                      })
+                    }
+                  >
+                    Loading
+                  </Button>
+                </div>
+                <div className='mt-8 space-y-3'>
+                  <Button
+                    isLoading={isLoading}
+                    onClick={() =>
+                      mutate({ email: 'admin@mail.com', password: 'admin' })
+                    }
+                  >
+                    Promise
+                  </Button>
+                  <Typography variant='h2' as='h2'>
+                    Query:
+                  </Typography>
+                  {queryData && <pre>{JSON.stringify(queryData, null, 2)}</pre>}
+                  <Typography variant='h2' as='h2'>
+                    Mutation:
+                  </Typography>
+                  {mutationData && (
+                    <pre>{JSON.stringify(mutationData, null, 2)}</pre>
+                  )}
+                </div>
+              </div>
             </li>
           </ol>
         </div>

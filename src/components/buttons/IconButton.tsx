@@ -12,15 +12,15 @@ const IconButtonVariant = [
   'light',
   'dark',
 ] as const;
+const IconButtonSize = ['xs', 'sm', 'base', 'lg'] as const;
 
 type IconButtonProps = {
   isLoading?: boolean;
   isDarkBg?: boolean;
   variant?: (typeof IconButtonVariant)[number];
   icon?: IconType | LucideIcon;
-  classNames?: {
-    icon?: string;
-  };
+  iconClassName?: string;
+  size?: (typeof IconButtonSize)[number];
 } & React.ComponentPropsWithRef<'button'>;
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
@@ -32,7 +32,8 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       variant = 'primary',
       isDarkBg = false,
       icon: Icon,
-      classNames,
+      iconClassName,
+      size = 'base',
       ...rest
     },
     ref
@@ -50,6 +51,22 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           'shadow-sm',
           'transition-colors duration-75',
           'min-h-[28px] min-w-[28px] p-1 md:min-h-[34px] md:min-w-[34px] md:p-2',
+          //#region  //*=========== Size ===========
+          [
+            size === 'lg' && [
+              'min-h-[2.75rem] min-w-[2.75rem] md:min-h-[3rem] md:min-w-[3rem]',
+              'text-base',
+            ],
+            size === 'base' && [
+              'min-h-[2.25rem] min-w-[2.25rem] md:min-h-[2.5rem] md:min-w-[2.5rem]',
+              'text-sm md:text-base',
+            ],
+            size === 'sm' && [
+              'min-h-[1.75rem] min-w-[1.75rem] md:min-h-[2rem] md:min-w-[2rem]',
+              'text-xs md:text-sm',
+            ],
+            size === 'xs' && ['p-1', 'text-xs md:text-sm'],
+          ],
           //#region  //*=========== Variants ===========
           [
             variant === 'primary' && [
@@ -107,7 +124,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
             <ImSpinner2 className='animate-spin' />
           </div>
         )}
-        {Icon && <Icon size='1em' className={cn(classNames?.icon)} />}
+        {Icon && <Icon size='1em' className={cn(iconClassName)} />}
       </button>
     );
   }
