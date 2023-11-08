@@ -7,15 +7,15 @@ export const metadata: Metadata = {
   title: 'Login',
   description: 'User signin',
 };
-export default function RegisterPage() {
+export default function LoginPage() {
   return (
     <main>
       <section className={clsx('dark:bg-dark bg-white')}>
         <div
           className={clsx(
-            'layout min-h-screen py-20',
+            'layout min-h-screen md:px-5 md:py-20',
             'text-black dark:text-white',
-            'flex justify-center'
+            'flex justify-start md:justify-center'
           )}
         >
           <FormLogin />

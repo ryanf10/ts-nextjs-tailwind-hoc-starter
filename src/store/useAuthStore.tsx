@@ -40,6 +40,7 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
   },
   logout: () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     set(
       produce<AuthStoreType>((state) => {
         state.isAuthenticated = false;

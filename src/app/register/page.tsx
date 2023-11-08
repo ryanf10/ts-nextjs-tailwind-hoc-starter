@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import { Metadata } from 'next';
 
+import FormRegister from '@/components/register/FormRegister';
+
 export const metadata: Metadata = {
   title: 'Register',
   description: 'Join us now!',
@@ -14,7 +16,9 @@ export default function RegisterPage() {
             'layout min-h-screen py-20',
             'text-black dark:text-white'
           )}
-        ></div>
+        >
+          <FormRegister />
+        </div>
       </section>
     </main>
   );

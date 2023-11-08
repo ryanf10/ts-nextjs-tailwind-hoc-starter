@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import {
   FieldValues,
@@ -9,8 +10,7 @@ import {
   useForm,
 } from 'react-hook-form';
 
-import { useGetProfile } from '@/lib/api/auth/get-profile';
-import { LoginParam, useLogin } from '@/lib/api/auth/login';
+import { RegisterParam, useRegister } from '@/lib/api/auth/register';
 import useMutationToast from '@/hooks/toast/useMutationToast';
 
 import Button from '@/components/buttons/Button';
@@ -20,37 +20,31 @@ import PasswordInput from '@/components/forms/PasswordInput';
 import withAuth from '@/components/hoc/withAuth';
 import PrimaryLink from '@/components/links/PrimaryLink';
 
-import useAuthStore from '@/store/useAuthStore';
-
 import { ApiResponse } from '@/types/api';
+import { User } from '@/types/user';
 
 import AuthBanner from '~/svg/auth-banner.svg';
-export default withAuth(FormLogin, 'auth');
-function FormLogin() {
-  const login = useAuthStore.useLogin();
-  const { data: mutationData, mutate } = useMutationToast<
-    ApiResponse<{ token: { access_token?: string } }>,
-    LoginParam
-  >(useLogin());
+
+export default withAuth(FormRegister, 'auth');
+function FormRegister() {
+  const router = useRouter();
+  const { mutate, isSuccess } = useMutationToast<
+    ApiResponse<User>,
+    RegisterParam
+  >(useRegister());
   const methods = useForm({
     mode: 'onTouched',
   });
-  const { handleSubmit } = methods;
-  const handleLogin: SubmitHandler<FieldValues> = (data) => {
+  const { handleSubmit, watch } = methods;
+  const handleRegister: SubmitHandler<FieldValues> = (data) => {
     mutate({ email: data.email, password: data.password });
   };
-  const token = mutationData?.data.token.access_token;
-  const fetchProfile = useGetProfile(token);
 
   useEffect(() => {
-    if (token && fetchProfile.isSuccess) {
-      login({
-        ...fetchProfile.data.data,
-        token: token,
-      });
+    if (isSuccess) {
+      router.push('/login');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, fetchProfile.isSuccess]);
+  }, [isSuccess, router]);
 
   return (
     <>
@@ -84,11 +78,11 @@ function FormLogin() {
         <div className='sm:p-12.5 xl:p-17.5 w-full p-4 md:border-l md:border-l-gray-300'>
           <span className='mb-1.5 block font-medium'>Start for free</span>
           <h2 className='sm:text-title-xl2 mb-9 text-2xl font-bold text-black dark:text-white'>
-            Sign In to Template
+            Sign Up to Template
           </h2>
 
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(handleLogin)} className='space-y-3'>
+            <form onSubmit={handleSubmit(handleRegister)} className='space-y-3'>
               <Input
                 label='Email'
                 id='email'
@@ -98,6 +92,24 @@ function FormLogin() {
               <PasswordInput
                 label='Password'
                 id='password'
+                validation={{
+                  minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters',
+                  },
+                }}
+                placeholder='Enter your password'
+              />
+              <PasswordInput
+                label='Confirm Password'
+                id='confirm_password'
+                validation={{
+                  validate: (value: string) => {
+                    if (watch('password') != value) {
+                      return 'Your passwords do not match';
+                    }
+                  },
+                }}
                 placeholder='Enter your password'
               />
               <div className=''>
@@ -112,8 +124,8 @@ function FormLogin() {
           </FormProvider>
           <div className='mt-6 text-center'>
             <p>
-              Don’t have any account?{' '}
-              <PrimaryLink href='/register'>Sign Up</PrimaryLink>
+              Already have an account?{' '}
+              <PrimaryLink href='/login'>Sign in</PrimaryLink>
             </p>
           </div>
           <div className='absolute right-3 top-3'>
