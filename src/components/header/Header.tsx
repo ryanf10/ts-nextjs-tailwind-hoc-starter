@@ -4,17 +4,15 @@ import ToggleThemeButton from '@/components/buttons/ToggleThemeButton';
 import DropdownMessage from '@/components/header/DropdownMessage';
 import DropdownNotification from '@/components/header/DropdownNotification';
 import DropdownUser from '@/components/header/DropdownUser';
-import withAuth, { WithAuthProps } from '@/components/hoc/withAuth';
 
 import Logo from '~/svg/Vercel.svg';
 
 type HeaderProps = {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
-} & WithAuthProps;
-export default withAuth<HeaderProps>(Header, 'all');
+};
 
-function Header(props: HeaderProps) {
+export default function Header(props: HeaderProps) {
   return (
     <header className='drop-shadow-1 dark:bg-boxdark sticky top-0 z-[999] flex w-full bg-white dark:drop-shadow-none'>
       <div className='shadow-2 flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11'>

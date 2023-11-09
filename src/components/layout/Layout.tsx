@@ -3,9 +3,14 @@
 import { useState } from 'react';
 
 import Header from '@/components/header/Header';
+import withAuth, { WithAuthProps } from '@/components/hoc/withAuth';
 import Sidebar from '@/components/sidebar/Sidebar';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default withAuth<{ children: React.ReactNode } & WithAuthProps>(
+  Layout,
+  'all'
+);
+function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

@@ -64,7 +64,7 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
     const logout = useAuthStore.useLogout();
     const stopLoading = useAuthStore.useStopLoading();
     const user = useAuthStore.useUser();
-    const role = useAuthStore.useRole();
+    const activeRole = useAuthStore.useRole();
     //#endregion  //*======== STORE ===========
 
     const checkAuth = React.useCallback(() => {
@@ -142,7 +142,7 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
     if (!isLoading && isAuthenticated && routeRole == 'all') {
       if (allowedRoles) {
         const find = allowedRoles.some(
-          (allowedRole) => allowedRole == role?.name
+          (allowedRole) => allowedRole == activeRole?.name
         );
         if (!find) {
           return (

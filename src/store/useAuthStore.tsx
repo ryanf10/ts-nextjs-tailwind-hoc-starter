@@ -13,6 +13,7 @@ type AuthStoreType = {
   login: (user: AuthUser, preferedRole?: Role) => void;
   logout: () => void;
   stopLoading: () => void;
+  switchRole: (role: Role) => void;
 };
 
 const useAuthStoreBase = create<AuthStoreType>((set) => ({
@@ -53,6 +54,13 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
     set(
       produce<AuthStoreType>((state) => {
         state.isLoading = false;
+      })
+    );
+  },
+  switchRole: (role) => {
+    set(
+      produce<AuthStoreType>((state) => {
+        state.role = role;
       })
     );
   },
