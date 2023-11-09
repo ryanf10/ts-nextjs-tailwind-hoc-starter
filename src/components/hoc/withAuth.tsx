@@ -2,13 +2,13 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
-import { ImSpinner8 } from 'react-icons/im';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import axios from '@/lib/axios';
 import { getFromLocalStorage } from '@/lib/helper';
 
 import TextButton from '@/components/buttons/TextButton';
+import PageLoader from '@/components/loader/PageLoader';
 
 import useAuthStore from '@/store/useAuthStore';
 
@@ -174,12 +174,7 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
       routeRole !== 'auth' &&
       routeRole !== 'optional'
     ) {
-      return (
-        <div className='flex min-h-screen flex-col items-center justify-center text-gray-800'>
-          <ImSpinner8 className='mb-4 animate-spin text-4xl' />
-          <p>Loading...</p>
-        </div>
-      );
+      return <PageLoader />;
     }
 
     return <Component {...(props as T)} user={user} />;
