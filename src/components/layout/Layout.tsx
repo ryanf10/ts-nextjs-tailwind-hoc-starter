@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import Header from '@/components/header/Header';
+import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -11,10 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className='dark:bg-boxdark-2 dark:text-bodydark'>
       <div className='flex h-screen overflow-hidden'>
         {/* <!-- ===== Sidebar Start ===== --> */}
-        {/*<Sidebar*/}
-        {/*  sidebarOpen={sidebarOpen}*/}
-        {/*  setSidebarOpen={setSidebarOpen}*/}
-        {/*/>*/}
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* <!-- ===== Sidebar End ===== --> */}
 
         {/* <!-- ===== Content Area Start ===== --> */}
