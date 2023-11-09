@@ -1,9 +1,10 @@
 import axios, { AxiosError } from 'axios';
+import * as process from 'process';
 
 import { UninterceptedApiError } from '@/types/api';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',
   },
