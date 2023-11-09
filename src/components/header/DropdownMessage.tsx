@@ -12,11 +12,11 @@ export default function DropdownMessage() {
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdown.current) return;
+      if (!dropdown.current || !trigger.current) return;
       if (
         !dropdownOpen ||
-        dropdown.current?.contains(target as Node) ||
-        trigger.current?.contains(target as Node)
+        dropdown.current.contains(target as Node) ||
+        trigger.current.contains(target as Node)
       )
         return;
       setDropdownOpen(false);
