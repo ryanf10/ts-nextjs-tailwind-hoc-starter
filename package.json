@@ -1,5 +1,5 @@
 {
-  "name": "ts-nextjs-tailwind-starter",
+  "name": "ts-nextjs-tailwind-hoc-starter",
   "version": "0.1.0",
   "private": true,
   "scripts": {
