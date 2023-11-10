@@ -82,7 +82,11 @@ It is encouraged to use **yarn** so the husky hooks can work properly.
 yarn install
 ```
 
-### 3. Run the development server
+### 3. Backend Dependencies
+
+This starter is using [Backend Project](https://github.com/ryanf10/nestjs-auth-mongodb) (NestJS JWT Authentication and Authorization using MongoDB).
+
+### 4. Run the development server
 
 You can start the server using this command:
 
@@ -92,7 +96,7 @@ yarn dev
 
 Open [http://localhost:3001](http://localhost:3001) with your browser to see the result. You can start editing the page by modifying `src/pages/index.tsx`.
 
-### 4. Change defaults
+### 5. Change defaults
 
 There are some things you need to change including title, urls, favicons, etc.
 
@@ -100,11 +104,11 @@ Find all comments with !STARTERCONF, then follow the guide.
 
 Don't forget to change the package name in package.json
 
-### 5. Commit Message Convention
+### 6. Commit Message Convention
 
 This starter is using [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/), it is mandatory to use it to commit changes.
 
-## Projects using ts-nextjs-tailwind-starter
+## Special Credits 😃
 
 <!--
 TEMPLATE
@@ -112,22 +116,5 @@ TEMPLATE
 - [sitename](https://sitelink.com)
 -->
 
-- [theodorusclarence.com](https://theodorusclarence.com) ([Source](https://github.com/theodorusclarence/theodorusclarence.com))
-- [Notiolink](https://notiolink.thcl.dev/) ([Source](https://github.com/theodorusclarence/notiolink))
-- [NextJs + Materia UI + Typescript](https://github.com/AlexStack/nextjs-materia-mui-typescript-hook-form-scaffold-boilerplate-starter)
-
-Are you using this starter? Please add your page (and repo) to the end of the list via a [Pull Request](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter/edit/main/README.md). 😃
-
-## Expansion Pack 📦
-
-This starter is now equipped with an [expansion pack](https://github.com/theodorusclarence/expansion-pack).
-
-You can easily add expansion such as React Hook Form + Components, Storybook, and more just using a single command line.
-
-<https://user-images.githubusercontent.com/55318172/146631994-e1cac137-1664-4cfe-950b-a96decc1eaa6.mp4>
-
-Check out the [expansion pack repository](https://github.com/theodorusclarence/expansion-pack) for the commands
-
-### App Router Update
-
-Due to App Router update, the expansion pack is currently **outdated**. It will be updated in the future. You can still use them by copy and pasting the files.
+- [Next.js + Tailwind CSS + TypeScript](tsnext-tw.thcl.dev) ([Source](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter))
+- [TailAdmin](https://nextjs-demo.tailadmin.com/) ([Source](https://github.com/TailAdmin/free-nextjs-admin-dashboard))
