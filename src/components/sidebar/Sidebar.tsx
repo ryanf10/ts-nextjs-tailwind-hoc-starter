@@ -22,7 +22,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const trigger = useRef<HTMLButtonElement>(null);
   const sidebar = useRef<HTMLDivElement>(null);
 
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
 
   // close on click outside
   useEffect(() => {
@@ -287,7 +287,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className='mb-5.5 mt-4 flex flex-col gap-2.5 pl-6'>
                           <li>
                             <SidebarLinkGroupItem
-                              href='/ui/alerts'
+                              href='/components#alert'
                               isActive={pathname === '/ui/alerts'}
                             >
                               Alerts
@@ -295,7 +295,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <SidebarLinkGroupItem
-                              href='/ui/buttons'
+                              href='/components#button'
                               isActive={pathname === '/ui/alerts'}
                             >
                               Buttons

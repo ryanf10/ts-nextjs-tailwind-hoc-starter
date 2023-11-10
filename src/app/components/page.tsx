@@ -329,7 +329,7 @@ export default function ComponentPage() {
                 </ButtonLink>
               </div>
             </li>
-            <li className='space-y-2'>
+            <li className='space-y-2' id='button'>
               <h2 className='text-lg md:text-xl'>Button</h2>
               <p
                 className={clsx(
@@ -545,7 +545,7 @@ export default function ComponentPage() {
               </p>
               <Skeleton className='h-72 w-72' />
             </li>
-            <li className='space-y-2'>
+            <li className='space-y-2' id='alert'>
               <h2 className='text-lg md:text-xl'>Alert</h2>
               <p
                 className={clsx(
