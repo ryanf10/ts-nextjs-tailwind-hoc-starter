@@ -1,6 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+
+import NextImage from '@/components/NextImage';
 
 export default function DropdownMessage() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -101,11 +102,11 @@ export default function DropdownMessage() {
               href='/messages'
             >
               <div className='h-12.5 w-12.5 rounded-full'>
-                <Image
+                <NextImage
                   width={112}
                   height={112}
                   src='/images/profile_picture.jpg'
-                  className='rounded-full'
+                  classNames={{ image: 'rounded-full' }}
                   alt='User'
                 />
               </div>
@@ -125,12 +126,12 @@ export default function DropdownMessage() {
               href='/messages'
             >
               <div className='h-12.5 w-12.5 rounded-full'>
-                <Image
-                  width={112}
-                  height={112}
-                  src='/images/profile_picture.jpg'
-                  className='rounded-full'
-                  alt='User'
+                <NextImage
+                  useSkeleton
+                  src='/favicon/android-chrome-192x192.png'
+                  width='192'
+                  height='192'
+                  alt='Icon'
                 />
               </div>
 
@@ -149,12 +150,12 @@ export default function DropdownMessage() {
               href='/messages'
             >
               <div className='h-12.5 w-12.5 rounded-full'>
-                <Image
-                  width={112}
-                  height={112}
-                  src='/images/profile_picture.jpg'
-                  className='rounded-full'
-                  alt='User'
+                <NextImage
+                  useSkeleton
+                  src='/favicon/android-chrome-192x192.png'
+                  width='192'
+                  height='192'
+                  alt='Icon'
                 />
               </div>
 
@@ -173,12 +174,12 @@ export default function DropdownMessage() {
               href='/messages'
             >
               <div className='h-12.5 w-12.5 rounded-full'>
-                <Image
-                  width={112}
-                  height={112}
-                  src='/images/profile_picture.jpg'
-                  className='rounded-full'
-                  alt='User'
+                <NextImage
+                  useSkeleton
+                  src='/favicon/android-chrome-192x192.png'
+                  width='192'
+                  height='192'
+                  alt='Icon'
                 />
               </div>
 
@@ -197,12 +198,12 @@ export default function DropdownMessage() {
               href='/messages'
             >
               <div className='h-12.5 w-12.5 rounded-full'>
-                <Image
-                  width={112}
-                  height={112}
-                  src='/images/profile_picture.jpg'
-                  className='rounded-full'
-                  alt='User'
+                <NextImage
+                  useSkeleton
+                  src='/favicon/android-chrome-192x192.png'
+                  width='192'
+                  height='192'
+                  alt='Icon'
                 />
               </div>
 

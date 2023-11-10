@@ -1,11 +1,11 @@
 'use client';
-import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 import { cn } from '@/lib/utils';
 
 import TextButton from '@/components/buttons/TextButton';
 import withAuth from '@/components/hoc/withAuth';
+import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
 
@@ -21,10 +21,13 @@ function Profile() {
   return (
     <div className='border-stroke shadow-default dark:border-strokedark dark:bg-boxdark overflow-hidden rounded-sm border bg-white'>
       <div className='h-35 md:h-65 relative z-20'>
-        <Image
+        <NextImage
           src='/images/cover-01.png'
           alt='profile cover'
-          className='h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center'
+          classNames={{
+            image:
+              'h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center',
+          }}
           width={1940}
           height={520}
         />
@@ -32,12 +35,12 @@ function Profile() {
       <div className='xl:pb-11.5 px-4 pb-6 text-center lg:pb-8'>
         <div className='-mt-22 h-30 max-w-30 sm:max-w-44 relative z-30 mx-auto w-full rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:p-3'>
           <div className='drop-shadow-2 relative'>
-            <Image
+            <NextImage
               src='/images/profile_picture.jpg'
               width={160}
               height={160}
               alt='profile'
-              className='rounded-full'
+              classNames={{ image: 'rounded-full' }}
             />
             <label
               htmlFor='profile'

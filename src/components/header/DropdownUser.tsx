@@ -1,6 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+
+import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
 
@@ -58,12 +59,12 @@ export default function DropdownUser() {
         </span>
 
         <span className='h-12 w-12 rounded-full'>
-          <Image
+          <NextImage
             width={112}
             height={112}
             src='/images/profile_picture.jpg'
             alt='User'
-            className='rounded-full'
+            classNames={{ image: 'rounded-full' }}
           />
         </span>
 

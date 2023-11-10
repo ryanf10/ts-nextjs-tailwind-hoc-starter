@@ -38,7 +38,7 @@ export default function NextImage({
 
   return (
     <figure
-      style={!widthIsSet ? { width: `${width}px` } : undefined}
+      style={!widthIsSet ? { width: `${width}` } : undefined}
       className={className}
     >
       <Image

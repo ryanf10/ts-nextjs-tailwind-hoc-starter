@@ -1,7 +1,6 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   FieldValues,
   FormProvider,
@@ -19,6 +18,7 @@ import Input from '@/components/forms/Input';
 import PasswordInput from '@/components/forms/PasswordInput';
 import withAuth from '@/components/hoc/withAuth';
 import PrimaryLink from '@/components/links/PrimaryLink';
+import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
 
@@ -57,19 +57,12 @@ function FormLogin() {
       <div className='grid h-fit md:grid-cols-2 md:border'>
         <div className='px-5 py-4 text-center'>
           <Link className='mb-5.5 inline-block' href='/'>
-            <Image
-              className='hidden dark:block'
-              src='/svg/Vercel.svg'
-              alt='Logo'
-              width={88}
-              height={16}
-            />
-            <Image
-              className='dark:hidden'
-              src='/svg/Vercel.svg'
-              alt='Logo'
-              width={88}
-              height={16}
+            <NextImage
+              useSkeleton
+              src='/favicon/android-chrome-192x192.png'
+              width='192'
+              height='192'
+              alt='Icon'
             />
           </Link>
 
