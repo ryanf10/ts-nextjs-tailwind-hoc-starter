@@ -1,4 +1,4 @@
-# Next.js + Tailwind CSS + HOC Authentication + TypeScript Starter and Boilerplate
+# Next.js + Tailwind CSS + HOC Auth + TypeScript Starter and Boilerplate
 
 <div align="center">
   <h2>🔋 ts-nextjs-tailwind-hoc-starter</h2>
@@ -11,7 +11,7 @@
 
 This repository is 🔋 battery packed with:
 
-- ⚡️ Next.js 13 with App Router
+- ⚡️ Next.js 14 with App Router
 - ⚛️ React 18
 - ✨ TypeScript
 - 💨 Tailwind CSS 3 — Configured with CSS Variables to extend the **primary** color
@@ -96,5 +96,5 @@ TEMPLATE
 - [sitename](https://sitelink.com)
 -->
 
-- [Next.js + Tailwind CSS + TypeScript](tsnext-tw.thcl.dev) ([Source](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter))
+- [Next.js + Tailwind CSS + TypeScript](https://tsnext-tw.thcl.dev) ([Source](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter))
 - [TailAdmin](https://nextjs-demo.tailadmin.com/) ([Source](https://github.com/TailAdmin/free-nextjs-admin-dashboard))
