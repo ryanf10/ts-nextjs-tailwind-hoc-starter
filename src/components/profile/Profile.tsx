@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 import { cn } from '@/lib/utils';
@@ -21,13 +22,10 @@ function Profile() {
   return (
     <div className='border-stroke shadow-default dark:border-strokedark dark:bg-boxdark overflow-hidden rounded-sm border bg-white'>
       <div className='h-35 md:h-65 relative z-20'>
-        <NextImage
+        <Image
           src='/images/cover-01.png'
           alt='profile cover'
-          classNames={{
-            image:
-              'h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center',
-          }}
+          className='h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center'
           width={1940}
           height={520}
         />
