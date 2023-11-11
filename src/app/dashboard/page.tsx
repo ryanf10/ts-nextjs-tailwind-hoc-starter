@@ -1,9 +1,9 @@
-import UserInfo from '@/components/private/UserInfo';
+import WelcomeText from '@/components/welcome/WelcomeText';
 
 export default function Dashboard() {
   return (
     <>
-      <UserInfo />
+      <WelcomeText />
     </>
   );
 }
