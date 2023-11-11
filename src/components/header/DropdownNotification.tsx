@@ -1,7 +1,16 @@
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import ReactTimeAgo from 'react-time-ago';
+
+import { useGetNotifications } from '@/lib/api/notifications/get-notifications';
+
+TimeAgo.addDefaultLocale(en);
 
 export default function DropdownNotification() {
+  const notifications = useGetNotifications().data?.data;
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
 
@@ -80,69 +89,24 @@ export default function DropdownNotification() {
         </div>
 
         <ul className='flex h-auto flex-col overflow-y-auto'>
-          <li>
-            <Link
-              className='border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex flex-col gap-2.5 border-t py-3'
-              href='#'
-            >
-              <p className='text-sm'>
-                <span className='text-black dark:text-white'>
-                  Edit your information in a swipe
-                </span>{' '}
-                Sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim.
-              </p>
-
-              <p className='text-xs'>12 May, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex flex-col gap-2.5 border-t py-3'
-              href='#'
-            >
-              <p className='text-sm'>
-                <span className='text-black dark:text-white'>
-                  It is a long established fact
-                </span>{' '}
-                that a reader will be distracted by the readable.
-              </p>
-
-              <p className='text-xs'>24 Feb, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex flex-col gap-2.5 border-t py-3'
-              href='#'
-            >
-              <p className='text-sm'>
-                <span className='text-black dark:text-white'>
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className='text-xs'>04 Jan, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex flex-col gap-2.5 border-t py-3'
-              href='#'
-            >
-              <p className='text-sm'>
-                <span className='text-black dark:text-white'>
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className='text-xs'>01 Dec, 2024</p>
-            </Link>
-          </li>
+          {notifications?.map((notification) => {
+            return (
+              <li key={notification.id}>
+                <Link
+                  className='border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex flex-col gap-2.5 border-t py-3'
+                  href='#'
+                >
+                  <p className='text-sm'>{notification.message}</p>
+                  <p className='text-xs'>
+                    <ReactTimeAgo
+                      date={new Date(notification.createdAt)}
+                      locale='en-US'
+                    />
+                  </p>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </li>
