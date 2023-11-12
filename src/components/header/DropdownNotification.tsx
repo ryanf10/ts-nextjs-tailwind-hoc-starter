@@ -6,10 +6,25 @@ import ReactTimeAgo from 'react-time-ago';
 
 import { useGetNotifications } from '@/lib/api/notifications/get-notifications';
 
+import useNotificationStore from '@/store/useNotificationStore';
+
 TimeAgo.addDefaultLocale(en);
 
+import { socket } from '@/lib/socket';
+
+import { Notification } from '@/types/notification';
+
 export default function DropdownNotification() {
-  const notifications = useGetNotifications().data?.data;
+  const notifications = useNotificationStore.useNotifications();
+  const initNotifications = useNotificationStore.useInit();
+  const addOneNotification = useNotificationStore.useAddOne();
+  const fetchNotifications = useGetNotifications();
+  useEffect(() => {
+    if (fetchNotifications.isSuccess) {
+      initNotifications(fetchNotifications.data.data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchNotifications.isSuccess]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
@@ -31,6 +46,20 @@ export default function DropdownNotification() {
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
   });
+
+  useEffect(() => {
+    function newNotificationEvent(data: Notification) {
+      addOneNotification(data);
+      if (!dropdownOpen) {
+        setNotifying(true);
+      }
+    }
+
+    socket.on('notification', newNotificationEvent);
+    return () => {
+      socket.off('notification', newNotificationEvent);
+    };
+  }, [dropdownOpen, addOneNotification]);
 
   // close if the esc key is pressed
   useEffect(() => {
