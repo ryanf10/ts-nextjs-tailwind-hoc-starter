@@ -64,7 +64,7 @@ yarn install
 
 ### 3. Backend Dependencies
 
-This starter is using [Backend Project](https://github.com/ryanf10/nestjs-auth-mongodb) (NestJS JWT Authentication and Authorization using MongoDB).
+This starter is using [Backend Project](https://github.com/ryanf10/nestjs-auth-mongodb) (NestJS JWT Authentication and Authorization using MongoDB + Realtime Notifications using WebSocket).
 
 ### 4. Run the development server
 
