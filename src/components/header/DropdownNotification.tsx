@@ -63,8 +63,8 @@ export default function DropdownNotification() {
 
   // close if the esc key is pressed
   useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
-      if (!dropdownOpen || keyCode !== 27) return;
+    const keyHandler = ({ key }: KeyboardEvent) => {
+      if (!dropdownOpen || key !== 'Escape') return;
       setDropdownOpen(false);
     };
     document.addEventListener('keydown', keyHandler);
