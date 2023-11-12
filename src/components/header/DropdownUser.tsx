@@ -1,16 +1,20 @@
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
+import useNotificationStore from '@/store/useNotificationStore';
 
 import { AuthUser } from '@/types/user';
 
 export default function DropdownUser() {
+  const queryClient = useQueryClient();
   const user = useAuthStore.useUser() as AuthUser;
   const role = useAuthStore.useRole();
   const logout = useAuthStore.useLogout();
+  const resetNotifications = useNotificationStore.useReset();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -42,6 +46,12 @@ export default function DropdownUser() {
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
+
+  const doLogout = () => {
+    logout();
+    resetNotifications();
+    queryClient.clear();
+  };
 
   return (
     <div className='relative'>
@@ -170,7 +180,7 @@ export default function DropdownUser() {
         <button
           className='hover:text-primary flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out lg:text-base'
           onClick={() => {
-            logout();
+            doLogout();
           }}
         >
           <svg

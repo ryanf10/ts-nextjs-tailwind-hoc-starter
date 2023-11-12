@@ -8,10 +8,15 @@ type NotificationStoreType = {
   notifications: Array<Notification> | null;
   init: (data: Array<Notification>) => void;
   addOne: (data: Notification) => void;
+  reset: () => void;
+};
+
+const initialState = {
+  notifications: null,
 };
 
 const useNotificationsBase = create<NotificationStoreType>((set) => ({
-  notifications: null,
+  ...initialState,
   init: (data) => {
     set(
       produce<NotificationStoreType>((state) => {
@@ -27,6 +32,9 @@ const useNotificationsBase = create<NotificationStoreType>((set) => ({
         }
       })
     );
+  },
+  reset: () => {
+    set(initialState);
   },
 }));
 
