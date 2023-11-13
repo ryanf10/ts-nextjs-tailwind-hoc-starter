@@ -10,7 +10,7 @@ import useNotificationStore from '@/store/useNotificationStore';
 
 TimeAgo.addDefaultLocale(en);
 
-import { socket } from '@/lib/socket';
+import { socketConnect } from '@/lib/socket';
 
 import { Notification } from '@/types/notification';
 
@@ -48,16 +48,17 @@ export default function DropdownNotification() {
   });
 
   useEffect(() => {
+    const socket = socketConnect();
     function newNotificationEvent(data: Notification) {
       addOneNotification(data);
       if (!dropdownOpen) {
         setNotifying(true);
       }
     }
-
     socket.on('notification', newNotificationEvent);
     return () => {
       socket.off('notification', newNotificationEvent);
+      socket.disconnect();
     };
   }, [dropdownOpen, addOneNotification]);
 

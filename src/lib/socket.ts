@@ -3,12 +3,14 @@ import { io } from 'socket.io-client';
 
 import { getFromLocalStorage } from '@/lib/helper';
 
-export const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL ?? '', {
-  transportOptions: {
-    polling: {
-      extraHeaders: {
-        Authorization: `Bearer ${getFromLocalStorage('token')}`,
+export const socketConnect = () => {
+  return io(process.env.NEXT_PUBLIC_BACKEND_URL ?? '', {
+    transportOptions: {
+      polling: {
+        extraHeaders: {
+          Authorization: `Bearer ${getFromLocalStorage('token')}`,
+        },
       },
     },
-  },
-});
+  });
+};
