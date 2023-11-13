@@ -92,7 +92,6 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
           login(
             {
               ...res.data.data,
-              token: token + '',
             },
             tempRole
           );

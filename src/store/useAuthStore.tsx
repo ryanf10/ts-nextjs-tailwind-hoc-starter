@@ -22,7 +22,6 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
   isAuthenticated: false,
   isLoading: true,
   login: (user, preferedRole) => {
-    localStorage.setItem('token', user.token);
     let tempRole = user.roles[0];
     if (preferedRole) {
       const roleItem = user.roles.find((item) => item == preferedRole);

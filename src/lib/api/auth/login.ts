@@ -11,12 +11,12 @@ export type LoginParam = {
 };
 export const useLogin = () => {
   return useMutation<
-    ApiResponse<{ token: { access_token?: string } }>,
+    ApiResponse<{ access_token?: string; refresh_token?: string }>,
     AxiosError<ApiError>,
     LoginParam
   >(async ({ email, password }: LoginParam) => {
     const res = await axios.post<
-      ApiResponse<{ token: { access_token?: string } }>
+      ApiResponse<{ access_token?: string; refresh_token?: string }>
     >('/auth/login', {
       email: email,
       password: password,

@@ -6,6 +6,4 @@ export type User = {
   roles: Array<Role>;
 };
 
-export type AuthUser = {
-  token: string;
-} & User;
+export type AuthUser = User;

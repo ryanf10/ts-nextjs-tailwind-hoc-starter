@@ -29,7 +29,7 @@ export default withAuth(FormLogin, 'auth');
 function FormLogin() {
   const login = useAuthStore.useLogin();
   const { data: mutationData, mutate } = useMutationToast<
-    ApiResponse<{ token: { access_token?: string } }>,
+    ApiResponse<{ access_token?: string; refresh_token?: string }>,
     LoginParam
   >(useLogin());
   const methods = useForm({
@@ -39,15 +39,17 @@ function FormLogin() {
   const handleLogin: SubmitHandler<FieldValues> = (data) => {
     mutate({ email: data.email, password: data.password });
   };
-  const token = mutationData?.data.token.access_token;
+  const token = mutationData?.data.access_token;
+  const refreshToken = mutationData?.data.refresh_token;
   const fetchProfile = useGetProfile(token);
 
   useEffect(() => {
-    if (token && fetchProfile.isSuccess) {
+    if (token && refreshToken && fetchProfile.isSuccess) {
       login({
         ...fetchProfile.data.data,
-        token: token,
       });
+      localStorage.setItem('token', token);
+      localStorage.setItem('refresh_token', refreshToken);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, fetchProfile.isSuccess]);
