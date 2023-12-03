@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
-
+function timeout(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 export async function GET(_: Request) {
+  await timeout(5000);
   return NextResponse.json(
     {
       code: 200,

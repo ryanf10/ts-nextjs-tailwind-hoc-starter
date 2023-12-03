@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
-
+function timeout(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 export async function POST(_: Request) {
+  await timeout(5000);
   const errorRate = 0.2;
   return Math.random() > +errorRate
     ? NextResponse.json(
