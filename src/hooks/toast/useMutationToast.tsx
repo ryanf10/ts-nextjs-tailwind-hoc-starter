@@ -17,7 +17,7 @@ export default function useMutationToast<T, K>(
   mutation: UseMutationResult<T, AxiosError<ApiError>, K>,
   customMessages: OptionType = {}
 ) {
-  const { data, isError, isLoading, error } = mutation;
+  const { data, isError, isPending, error } = mutation;
 
   const toastStatus = React.useRef<string>(data ? 'done' : 'idle');
 
@@ -28,7 +28,7 @@ export default function useMutationToast<T, K>(
     };
 
     // If it is not the first render
-    if (toastStatus.current === 'done' && !isLoading) return;
+    if (toastStatus.current === 'done' && !isPending) return;
 
     if (isError) {
       toast.error(
@@ -40,7 +40,7 @@ export default function useMutationToast<T, K>(
         }
       );
       toastStatus.current = 'done';
-    } else if (isLoading) {
+    } else if (isPending) {
       toastStatus.current = toast.loading(toastMessage.loading);
     } else if (data) {
       toast.success(toastMessage.success, { id: toastStatus.current });
@@ -50,7 +50,7 @@ export default function useMutationToast<T, K>(
     return () => {
       toast.dismiss(toastStatus.current);
     };
-  }, [customMessages, data, error, isError, isLoading]);
+  }, [customMessages, data, error, isError, isPending]);
 
   return { ...mutation };
 }

@@ -11,14 +11,13 @@ export type RegisterParam = {
   password: string;
 };
 export const useRegister = () => {
-  return useMutation<ApiResponse<User>, AxiosError<ApiError>, RegisterParam>(
-    async ({ email, password }: RegisterParam) => {
+  return useMutation<ApiResponse<User>, AxiosError<ApiError>, RegisterParam>({
+    mutationFn: async ({ email, password }: RegisterParam) => {
       const res = await axios.post<ApiResponse<User>>('/auth/register', {
         email: email,
         password: password,
       });
       return res.data;
     },
-    {}
-  );
+  });
 };

@@ -104,14 +104,20 @@ export default function ComponentPage() {
 
   const {
     data: mutationData,
-    isLoading,
+    isPending,
     mutate,
   } = useMutationToast<ApiResponse<undefined>, LoginData>(
-    useMutation((data) => apiMock.post('/login', data).then((res) => res.data))
+    useMutation({
+      mutationFn: (data) =>
+        apiMock.post('/login', data).then((res) => res.data),
+    })
   );
 
   const { data: queryData } = useQueryToast(
-    useQuery<ApiResponse<User>, AxiosError<ApiError>>(['/me'], mockQuery)
+    useQuery<ApiResponse<User>, AxiosError<ApiError>>({
+      queryKey: ['/me'],
+      queryFn: mockQuery,
+    })
   );
   return (
     <main>
@@ -627,7 +633,7 @@ export default function ComponentPage() {
                 </div>
                 <div className='mt-8 space-y-3'>
                   <Button
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     onClick={() =>
                       mutate({ email: 'admin@mail.com', password: 'admin' })
                     }

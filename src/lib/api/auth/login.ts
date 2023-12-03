@@ -14,13 +14,15 @@ export const useLogin = () => {
     ApiResponse<{ access_token?: string; refresh_token?: string }>,
     AxiosError<ApiError>,
     LoginParam
-  >(async ({ email, password }: LoginParam) => {
-    const res = await axios.post<
-      ApiResponse<{ access_token?: string; refresh_token?: string }>
-    >('/auth/login', {
-      email: email,
-      password: password,
-    });
-    return res.data;
-  }, {});
+  >({
+    mutationFn: async ({ email, password }: LoginParam) => {
+      const res = await axios.post<
+        ApiResponse<{ access_token?: string; refresh_token?: string }>
+      >('/auth/login', {
+        email: email,
+        password: password,
+      });
+      return res.data;
+    },
+  });
 };
