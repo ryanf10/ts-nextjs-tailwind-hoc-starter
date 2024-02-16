@@ -40,6 +40,7 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
   },
   logout: () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('role');
     set(
       produce<AuthStoreType>((state) => {
@@ -57,6 +58,7 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
     );
   },
   switchRole: (role) => {
+    localStorage.setItem('role', role.id);
     set(
       produce<AuthStoreType>((state) => {
         state.role = role;
