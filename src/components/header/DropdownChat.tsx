@@ -13,6 +13,7 @@ export default function DropdownChat() {
   const user = useAuthStore.useUser();
   const chatList = useChatStore.useChatList();
   const initChatList = useChatStore.useInitChatList();
+  const setActiveChatId = useChatStore.useSetActiveChatId();
 
   const fetchChatList = useGetChatList();
   useEffect(() => {
@@ -119,6 +120,9 @@ export default function DropdownChat() {
               <Link
                 className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
                 href='/chat'
+                onClick={() => {
+                  setActiveChatId(item.id);
+                }}
               >
                 <div className='w-[50px] rounded-full'>
                   <NextImage

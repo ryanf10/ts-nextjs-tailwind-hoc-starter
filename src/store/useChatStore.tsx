@@ -7,11 +7,14 @@ import { Chat } from '@/types/chat';
 type ChatStoreType = {
   chatList: Array<Chat> | null;
   initChatList: (data: Array<Chat>) => void;
+  activeChatId: string | null;
+  setActiveChatId: (value: string | null) => void;
   reset: () => void;
 };
 
 const initialState = {
   chatList: null,
+  activeChatId: null,
 };
 
 const useChatStoreBase = create<ChatStoreType>((set) => ({
@@ -20,6 +23,13 @@ const useChatStoreBase = create<ChatStoreType>((set) => ({
     set(
       produce<ChatStoreType>((state) => {
         state.chatList = data;
+      })
+    );
+  },
+  setActiveChatId: (value) => {
+    set(
+      produce<ChatStoreType>((state) => {
+        state.activeChatId = value;
       })
     );
   },

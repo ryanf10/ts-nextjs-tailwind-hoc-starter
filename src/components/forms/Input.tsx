@@ -48,6 +48,7 @@ export default function Input({
   leftIcon: LeftIcon,
   rightNode,
   containerClassName,
+  className,
   ...rest
 }: InputProps) {
   const {
@@ -96,7 +97,8 @@ export default function Input({
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
             LeftIcon && 'pl-9',
             rightNode && 'pr-10',
-            'dark:text-gray-500'
+            'dark:text-gray-500',
+            className
           )}
           placeholder={placeholder}
           aria-describedby={id}

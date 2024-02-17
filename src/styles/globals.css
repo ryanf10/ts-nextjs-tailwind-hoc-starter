@@ -139,3 +139,12 @@
     background-size: 0 2px, 100% 2px;
   }
 }
+
+.overflow-style-none::-webkit-scrollbar {
+  display: none !important;
+}
+
+.overflow-style-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
