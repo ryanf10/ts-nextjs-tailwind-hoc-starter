@@ -1,9 +1,27 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import ReactTimeAgo from 'react-time-ago';
+
+import { useGetChatList } from '@/lib/api/chat';
 
 import NextImage from '@/components/NextImage';
 
-export default function DropdownMessage() {
+import useAuthStore from '@/store/useAuthStore';
+import useChatStore from '@/store/useChatStore';
+
+export default function DropdownChat() {
+  const user = useAuthStore.useUser();
+  const chatList = useChatStore.useChatList();
+  const initChatList = useChatStore.useInitChatList();
+
+  const fetchChatList = useGetChatList();
+  useEffect(() => {
+    if (fetchChatList.isSuccess) {
+      initChatList(fetchChatList.data.data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchChatList.isSuccess]);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
 
@@ -96,126 +114,44 @@ export default function DropdownMessage() {
         </div>
 
         <ul className='flex h-auto flex-col overflow-y-auto'>
-          <li>
-            <Link
-              className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
-              href='/messages'
-            >
-              <div className='h-12.5 w-12.5 rounded-full'>
-                <NextImage
-                  width={112}
-                  height={112}
-                  src='/images/profile_picture.jpg'
-                  classNames={{ image: 'rounded-full' }}
-                  alt='User'
-                />
-              </div>
+          {chatList?.map((item) => (
+            <li key={item.id}>
+              <Link
+                className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
+                href='/chat'
+              >
+                <div className='w-[50px] rounded-full'>
+                  <NextImage
+                    width={50}
+                    height={50}
+                    src='/images/profile_picture.jpg'
+                    classNames={{ image: 'rounded-full' }}
+                    alt='User'
+                    className='w-[50px]'
+                  />
+                </div>
 
-              <div>
-                <h6 className='text-sm font-medium text-black dark:text-white'>
-                  Mariya Desoja
-                </h6>
-                <p className='text-sm'>I like your confidence 💪</p>
-                <p className='text-xs'>2min ago</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
-              href='/messages'
-            >
-              <div className='h-12.5 w-12.5 rounded-full'>
-                <NextImage
-                  useSkeleton
-                  src='/favicon/android-chrome-192x192.png'
-                  width='192'
-                  height='192'
-                  alt='Icon'
-                />
-              </div>
-
-              <div>
-                <h6 className='text-sm font-medium text-black dark:text-white'>
-                  Robert Jhon
-                </h6>
-                <p className='text-sm'>Can you share your offer?</p>
-                <p className='text-xs'>10min ago</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
-              href='/messages'
-            >
-              <div className='h-12.5 w-12.5 rounded-full'>
-                <NextImage
-                  useSkeleton
-                  src='/favicon/android-chrome-192x192.png'
-                  width='192'
-                  height='192'
-                  alt='Icon'
-                />
-              </div>
-
-              <div>
-                <h6 className='text-sm font-medium text-black dark:text-white'>
-                  Henry Dholi
-                </h6>
-                <p className='text-sm'>I cam across your profile and...</p>
-                <p className='text-xs'>1day ago</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
-              href='/messages'
-            >
-              <div className='h-12.5 w-12.5 rounded-full'>
-                <NextImage
-                  useSkeleton
-                  src='/favicon/android-chrome-192x192.png'
-                  width='192'
-                  height='192'
-                  alt='Icon'
-                />
-              </div>
-
-              <div>
-                <h6 className='text-sm font-medium text-black dark:text-white'>
-                  Cody Fisher
-                </h6>
-                <p className='text-sm'>I’m waiting for you response!</p>
-                <p className='text-xs'>5days ago</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
-              href='/messages'
-            >
-              <div className='h-12.5 w-12.5 rounded-full'>
-                <NextImage
-                  useSkeleton
-                  src='/favicon/android-chrome-192x192.png'
-                  width='192'
-                  height='192'
-                  alt='Icon'
-                />
-              </div>
-
-              <div>
-                <h6 className='text-sm font-medium text-black dark:text-white'>
-                  Mariya Desoja
-                </h6>
-                <p className='text-sm'>I like your confidence 💪</p>
-                <p className='text-xs'>2min ago</p>
-              </div>
-            </Link>
-          </li>
+                <div className='w-full'>
+                  <h6 className='text-sm font-medium text-black dark:text-white'>
+                    {item.user1.id !== user?.id
+                      ? item.user1.username
+                      : item.user2.username}
+                  </h6>
+                  <p className='truncate break-all text-sm'>
+                    {item.lastMessage.length > 25
+                      ? `${item.lastMessage.slice(0, 25)}...`
+                      : item.lastMessage}
+                  </p>
+                  <p className='text-xs'>
+                    <ReactTimeAgo
+                      date={new Date(item.lastMessageAt)}
+                      locale='en-US'
+                    />
+                  </p>
+                </div>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
       {/* <!-- Dropdown End --> */}

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import ToggleThemeButton from '@/components/buttons/ToggleThemeButton';
-import DropdownMessage from '@/components/header/DropdownMessage';
+import DropdownChat from '@/components/header/DropdownChat';
 import DropdownNotification from '@/components/header/DropdownNotification';
 import DropdownUser from '@/components/header/DropdownUser';
 
@@ -76,7 +76,7 @@ export default function Header(props: HeaderProps) {
             {/* <!-- Notification Menu Area --> */}
 
             {/* <!-- Chat Notification Area --> */}
-            <DropdownMessage />
+            <DropdownChat />
             {/* <!-- Chat Notification Area --> */}
           </ul>
 
