@@ -76,10 +76,13 @@ function Profile() {
           </div>
         </div>
         <div className='mt-4'>
-          <h3 className='mb-1.5 text-2xl font-semibold text-black dark:text-white'>
+          <h4 className='text-2xl font-semibold text-black dark:text-white'>
+            {user.username}
+          </h4>
+          <h3 className='mb-1.5 text-base font-normal text-black dark:text-white'>
             {user.email}
           </h3>
-          <div className='flex justify-center gap-3'>
+          <div className='mt-3 flex justify-center gap-3'>
             {user.roles.map((role) => {
               return (
                 <TextButton

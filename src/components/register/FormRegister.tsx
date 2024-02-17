@@ -37,7 +37,11 @@ function FormRegister() {
   });
   const { handleSubmit, watch } = methods;
   const handleRegister: SubmitHandler<FieldValues> = (data) => {
-    mutate({ email: data.email, password: data.password });
+    mutate({
+      email: data.email,
+      username: data.username,
+      password: data.password,
+    });
   };
 
   useEffect(() => {
@@ -81,6 +85,20 @@ function FormRegister() {
                 id='email'
                 type='email'
                 placeholder='Enter your email'
+                validation={{ required: 'This is required' }}
+              />
+              <Input
+                label='Username'
+                id='username'
+                placeholder='Enter your username'
+                validation={{
+                  required: 'This is required',
+                  maxLength: {
+                    value: 12,
+                    message: 'Username must be no longer than 12 characters',
+                  },
+                }}
+                helperText='maximum 12 characters'
               />
               <PasswordInput
                 label='Password'

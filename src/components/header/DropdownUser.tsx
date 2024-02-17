@@ -63,7 +63,7 @@ export default function DropdownUser() {
       >
         <span className='hidden text-right lg:block'>
           <span className='block text-sm font-medium text-black dark:text-white'>
-            {user.email}
+            {user.username}
           </span>
           <span className='block text-xs'>{role?.name}</span>
         </span>
