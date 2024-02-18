@@ -3,6 +3,7 @@ import { produce } from 'immer';
 import { create } from 'zustand';
 
 import { Chat } from '@/types/chat';
+import { ChatMessage } from '@/types/chat-message';
 
 type ChatStoreType = {
   notifying: boolean;
@@ -14,6 +15,9 @@ type ChatStoreType = {
   newChat: (Chat & { isNewChat?: boolean }) | null;
   setNewChat: (value: (Chat & { isNewChat?: boolean }) | null) => void;
   removeAndSaveNewChat: (newChatData: Chat & { isNewChat?: boolean }) => void;
+  addOneChatFromSocket: (newChatData: Chat & { isNewChat?: boolean }) => void;
+  newChatMessageFromSocket: Array<ChatMessage>;
+  addOneNewChatMessageFromSocket: (data: ChatMessage) => void;
   reset: () => void;
 };
 
@@ -22,6 +26,7 @@ const initialState = {
   chatList: null,
   activeChat: null,
   newChat: null,
+  newChatMessageFromSocket: [],
 };
 
 const useChatStoreBase = create<ChatStoreType>((set) => ({
@@ -67,6 +72,34 @@ const useChatStoreBase = create<ChatStoreType>((set) => ({
       })
     );
   },
+  addOneChatFromSocket: (newChatData) => {
+    set(
+      produce<ChatStoreType>((state) => {
+        if (state.newChat) {
+          if (
+            (state.newChat.user1.id == newChatData.user1.id &&
+              state.newChat.user2.id == newChatData.user2.id) ||
+            (state.newChat.user1.id == newChatData.user2.id &&
+              state.newChat.user2.id == newChatData.user1.id)
+          ) {
+            if (state.chatList) {
+              state.chatList = state.chatList.filter(
+                (chat) => chat.id !== state.newChat?.id
+              );
+            }
+            state.newChat = null;
+            state.activeChat = newChatData;
+          }
+        }
+        if (state.chatList) {
+          state.chatList = state.chatList.filter(
+            (item) => item.id != newChatData.id
+          );
+          state.chatList.unshift(newChatData);
+        }
+      })
+    );
+  },
   setActiveChat: (value) => {
     set(
       produce<ChatStoreType>((state) => {
@@ -78,6 +111,13 @@ const useChatStoreBase = create<ChatStoreType>((set) => ({
     set(
       produce<ChatStoreType>((state) => {
         state.notifying = value;
+      })
+    );
+  },
+  addOneNewChatMessageFromSocket: (data) => {
+    set(
+      produce<ChatStoreType>((state) => {
+        state.newChatMessageFromSocket.push(data);
       })
     );
   },

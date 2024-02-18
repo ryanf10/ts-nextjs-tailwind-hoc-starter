@@ -15,3 +15,16 @@ export const notificationSocketConnect = () => {
     },
   });
 };
+
+export const chatSocketConnect = () => {
+  return io(process.env.NEXT_PUBLIC_BACKEND_URL ?? '', {
+    path: '/chat/socket.io',
+    transportOptions: {
+      polling: {
+        extraHeaders: {
+          Authorization: `Bearer ${getFromLocalStorage('token')}`,
+        },
+      },
+    },
+  });
+};

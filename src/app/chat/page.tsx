@@ -35,8 +35,7 @@ export default function ChatPage() {
   const chatList = useChatStore.useChatList();
   const activeChat = useChatStore.useActiveChat();
   const setActiveChat = useChatStore.useSetActiveChat();
-  const setNewChat = useChatStore.useSetNewChat();
-  const removeAndSaveNewChat = useChatStore.useRemoveAndSaveNewChat();
+  const newChatMessageFromSocket = useChatStore.useNewChatMessageFromSocket();
 
   const fetchMessagesByChatId = useGetMessagesByChatId(
     !activeChat?.isNewChat && activeChat?.id ? activeChat.id : undefined
@@ -50,12 +49,29 @@ export default function ChatPage() {
       tempRef.scrollTop = tempRef.scrollHeight;
     }
   }, []);
+  const getMessages = () => {
+    if (messages) {
+      const temp = [...messages];
+      newChatMessageFromSocket
+        .filter((item) => item.chatId == activeChat?.id)
+        .forEach((item) => {
+          //   add if not exists
+          const findMessage = temp.find((message) => message.id == item.id);
+          if (!findMessage) {
+            temp.push(item);
+            scrollToBottom();
+          }
+        });
+      return temp;
+    }
+    return [];
+  };
   useEffect(() => {
-    if (messages && messages.length) {
+    if (getMessages() && getMessages().length) {
       scrollToBottom();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
+  }, [getMessages]);
 
   const methods = useForm({
     mode: 'onTouched',
@@ -88,19 +104,19 @@ export default function ChatPage() {
           receiver: findReceiver(activeChat).id,
         },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             resetField('message');
             if (activeChat.isNewChat) {
-              const newChat = {
-                ...activeChat,
-                id: data.data.chatId,
-                isNewChat: false,
-                lastMessage: data.data.message,
-                lastMessageAt: data.data.createdAt,
-              };
-              removeAndSaveNewChat(newChat);
-              setActiveChat(newChat);
-              setNewChat(null);
+              // const newChat = {
+              //   ...activeChat,
+              //   id: data.data.chatId,
+              //   isNewChat: false,
+              //   lastMessage: data.data.message,
+              //   lastMessageAt: data.data.createdAt,
+              // };
+              // removeAndSaveNewChat(newChat);
+              // setActiveChat(newChat);
+              // setNewChat(null);
             }
           },
         }
@@ -230,8 +246,8 @@ export default function ChatPage() {
                     : 'h-full'
                 )}
               >
-                {activeChat?.id && messages && messages.length > 0 ? (
-                  messages.map((item) => (
+                {activeChat?.id && getMessages() && getMessages().length > 0 ? (
+                  getMessages().map((item) => (
                     <>
                       {/* Sender */}
                       {item.sender.id == user?.id && (

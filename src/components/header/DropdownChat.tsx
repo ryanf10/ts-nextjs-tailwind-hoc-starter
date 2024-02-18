@@ -3,17 +3,24 @@ import { useEffect, useRef, useState } from 'react';
 import ReactTimeAgo from 'react-time-ago';
 
 import { useGetChatList } from '@/lib/api/chat';
+import { chatSocketConnect } from '@/lib/socket';
 
 import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
 import useChatStore from '@/store/useChatStore';
 
+import { Chat } from '@/types/chat';
+import { ChatMessage } from '@/types/chat-message';
+
 export default function DropdownChat() {
   const user = useAuthStore.useUser();
   const chatList = useChatStore.useChatList();
   const initChatList = useChatStore.useInitChatList();
   const setActiveChat = useChatStore.useSetActiveChat();
+  const addOneChatFromSocket = useChatStore.useAddOneChatFromSocket();
+  const addOneChatMessageFromSocket =
+    useChatStore.useAddOneNewChatMessageFromSocket();
 
   const fetchChatList = useGetChatList();
   useEffect(() => {
@@ -45,6 +52,30 @@ export default function DropdownChat() {
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
   });
+
+  useEffect(() => {
+    const socket = chatSocketConnect();
+    function newChatFromSocket(data: Chat) {
+      addOneChatFromSocket(data);
+    }
+    socket.on('chat', newChatFromSocket);
+
+    function newChatMessageFromSocket(data: ChatMessage) {
+      addOneChatMessageFromSocket(data);
+      if (data.sender.id !== user?.id) {
+        if (!dropdownOpen) {
+          setNotifying(true);
+        }
+      }
+    }
+    socket.on('chat-message', newChatMessageFromSocket);
+    return () => {
+      socket.off('chat', newChatFromSocket);
+      socket.off('chat-message', newChatMessageFromSocket);
+      socket.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dropdownOpen]);
 
   // close if the esc key is pressed
   useEffect(() => {

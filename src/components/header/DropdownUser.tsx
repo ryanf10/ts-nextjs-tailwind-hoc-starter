@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
+import useChatStore from '@/store/useChatStore';
 import useNotificationStore from '@/store/useNotificationStore';
 
 import { AuthUser } from '@/types/user';
@@ -15,6 +16,7 @@ export default function DropdownUser() {
   const role = useAuthStore.useRole();
   const logout = useAuthStore.useLogout();
   const resetNotifications = useNotificationStore.useReset();
+  const resetChat = useChatStore.useReset();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -50,6 +52,7 @@ export default function DropdownUser() {
   const doLogout = () => {
     logout();
     resetNotifications();
+    resetChat();
     queryClient.clear();
   };
 
