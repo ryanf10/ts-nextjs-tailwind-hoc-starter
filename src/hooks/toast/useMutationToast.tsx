@@ -13,9 +13,20 @@ type OptionType = {
   error?: string;
 };
 
+type MuteToastOption = {
+  hideLoading?: boolean;
+  hideSuccess?: boolean;
+  hideError?: boolean;
+};
+
 export default function useMutationToast<T, K>(
   mutation: UseMutationResult<T, AxiosError<ApiError>, K>,
-  customMessages: OptionType = {}
+  customMessages: OptionType = {},
+  muteToastOption: MuteToastOption = {
+    hideLoading: false,
+    hideSuccess: false,
+    hideError: false,
+  }
 ) {
   const { data, isError, isPending, error } = mutation;
 
@@ -31,26 +42,32 @@ export default function useMutationToast<T, K>(
     if (toastStatus.current === 'done' && !isPending) return;
 
     if (isError) {
-      toast.error(
-        typeof toastMessage.error === 'string'
-          ? toastMessage.error
-          : toastMessage.error(error),
-        {
-          id: toastStatus.current,
-        }
-      );
+      if (!muteToastOption.hideError) {
+        toast.error(
+          typeof toastMessage.error === 'string'
+            ? toastMessage.error
+            : toastMessage.error(error),
+          {
+            id: toastStatus.current,
+          }
+        );
+      }
       toastStatus.current = 'done';
     } else if (isPending) {
-      toastStatus.current = toast.loading(toastMessage.loading);
+      if (!muteToastOption.hideLoading) {
+        toastStatus.current = toast.loading(toastMessage.loading);
+      }
     } else if (data) {
-      toast.success(toastMessage.success, { id: toastStatus.current });
+      if (!muteToastOption.hideSuccess) {
+        toast.success(toastMessage.success, { id: toastStatus.current });
+      }
       toastStatus.current = 'done';
     }
 
     return () => {
       toast.dismiss(toastStatus.current);
     };
-  }, [customMessages, data, error, isError, isPending]);
+  }, [customMessages, data, error, isError, isPending, muteToastOption]);
 
   return { ...mutation };
 }

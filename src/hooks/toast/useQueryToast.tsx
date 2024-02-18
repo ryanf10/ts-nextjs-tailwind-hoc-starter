@@ -13,9 +13,20 @@ type OptionType = {
   error?: string;
 };
 
+type MuteToastOption = {
+  hideLoading?: boolean;
+  hideSuccess?: boolean;
+  hideError?: boolean;
+};
+
 export default function useQueryToast<T>(
   query: UseQueryResult<T, AxiosError<ApiError>>,
-  customMessages: OptionType = {}
+  customMessages: OptionType = {},
+  muteToastOption: MuteToastOption = {
+    hideLoading: false,
+    hideSuccess: false,
+    hideError: false,
+  }
 ) {
   const { data, isError, isLoading, error } = query;
 
@@ -31,26 +42,32 @@ export default function useQueryToast<T>(
     if (toastStatus.current === 'done' && !isLoading) return;
 
     if (isError) {
-      toast.error(
-        typeof toastMessage.error === 'string'
-          ? toastMessage.error
-          : toastMessage.error(error),
-        {
-          id: toastStatus.current,
-        }
-      );
+      if (!muteToastOption.hideError) {
+        toast.error(
+          typeof toastMessage.error === 'string'
+            ? toastMessage.error
+            : toastMessage.error(error),
+          {
+            id: toastStatus.current,
+          }
+        );
+      }
       toastStatus.current = 'done';
     } else if (isLoading) {
-      toastStatus.current = toast.loading(toastMessage.loading);
+      if (!muteToastOption.hideLoading) {
+        toastStatus.current = toast.loading(toastMessage.loading);
+      }
     } else if (data) {
-      toast.success(toastMessage.success, { id: toastStatus.current });
+      if (!muteToastOption.hideSuccess) {
+        toast.success(toastMessage.success, { id: toastStatus.current });
+      }
       toastStatus.current = 'done';
     }
 
     return () => {
       toast.dismiss(toastStatus.current);
     };
-  }, [customMessages, data, error, isError, isLoading]);
+  }, [customMessages, data, error, isError, isLoading, muteToastOption]);
 
   return { ...query };
 }
