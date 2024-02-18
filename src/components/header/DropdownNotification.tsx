@@ -20,7 +20,7 @@ export default function DropdownNotification() {
   const addOneNotification = useNotificationStore.useAddOne();
   const fetchNotifications = useGetNotifications();
   useEffect(() => {
-    if (fetchNotifications.isSuccess) {
+    if (fetchNotifications.isSuccess && !notifications) {
       initNotifications(fetchNotifications.data.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

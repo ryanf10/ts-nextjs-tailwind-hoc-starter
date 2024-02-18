@@ -13,11 +13,11 @@ export default function DropdownChat() {
   const user = useAuthStore.useUser();
   const chatList = useChatStore.useChatList();
   const initChatList = useChatStore.useInitChatList();
-  const setActiveChatId = useChatStore.useSetActiveChatId();
+  const setActiveChat = useChatStore.useSetActiveChat();
 
   const fetchChatList = useGetChatList();
   useEffect(() => {
-    if (fetchChatList.isSuccess) {
+    if (fetchChatList.isSuccess && !chatList) {
       initChatList(fetchChatList.data.data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,47 +115,51 @@ export default function DropdownChat() {
         </div>
 
         <ul className='flex h-auto flex-col overflow-y-auto'>
-          {chatList?.map((item) => (
-            <li key={item.id}>
-              <Link
-                className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
-                href='/chat'
-                onClick={() => {
-                  setActiveChatId(item.id);
-                }}
-              >
-                <div className='w-[50px] rounded-full'>
-                  <NextImage
-                    width={50}
-                    height={50}
-                    src='/images/profile_picture.jpg'
-                    classNames={{ image: 'rounded-full' }}
-                    alt='User'
-                    className='w-[50px]'
-                  />
-                </div>
-
-                <div className='w-full'>
-                  <h6 className='text-sm font-medium text-black dark:text-white'>
-                    {item.user1.id !== user?.id
-                      ? item.user1.username
-                      : item.user2.username}
-                  </h6>
-                  <p className='truncate break-all text-sm'>
-                    {item.lastMessage.length > 25
-                      ? `${item.lastMessage.slice(0, 25)}...`
-                      : item.lastMessage}
-                  </p>
-                  <p className='text-xs'>
-                    <ReactTimeAgo
-                      date={new Date(item.lastMessageAt)}
-                      locale='en-US'
+          {chatList
+            ?.filter((item) => !item.isNewChat)
+            .map((item) => (
+              <li key={item.id}>
+                <Link
+                  className='gap-4.5 border-stroke px-4.5 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 flex border-t py-3'
+                  href='/chat'
+                  onClick={() => {
+                    setActiveChat(item);
+                  }}
+                >
+                  <div className='w-[50px] rounded-full'>
+                    <NextImage
+                      width={50}
+                      height={50}
+                      src='/images/profile_picture.jpg'
+                      classNames={{ image: 'rounded-full' }}
+                      alt='User'
+                      className='w-[50px]'
                     />
-                  </p>
-                </div>
-              </Link>
-            </li>
-          ))}
+                  </div>
+
+                  <div className='w-full'>
+                    <h6 className='text-sm font-medium text-black dark:text-white'>
+                      {item.user1.id !== user?.id
+                        ? item.user1.username
+                        : item.user2.username}
+                    </h6>
+                    <p className='truncate break-all text-sm'>
+                      {item.lastMessage.length > 25
+                        ? `${item.lastMessage.slice(0, 25)}...`
+                        : item.lastMessage}
+                    </p>
+                    {item.lastMessageAt && (
+                      <p className='text-xs'>
+                        <ReactTimeAgo
+                          date={new Date(item.lastMessageAt)}
+                          locale='en-US'
+                        />
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              </li>
+            ))}
         </ul>
       </div>
       {/* <!-- Dropdown End --> */}

@@ -5,5 +5,5 @@ export type Chat = {
   user1: Omit<User, 'email' | 'roles'>;
   user2: Omit<User, 'email' | 'roles'>;
   lastMessage: string;
-  lastMessageAt: string;
+  lastMessageAt: string | null;
 };
