@@ -5,6 +5,8 @@ import { create } from 'zustand';
 import { Chat } from '@/types/chat';
 
 type ChatStoreType = {
+  notifying: boolean;
+  setNotifying: (value: boolean) => void;
   chatList: Array<Chat & { isNewChat?: boolean }> | null;
   initChatList: (data: Array<Chat>) => void;
   activeChat: (Chat & { isNewChat?: boolean }) | null;
@@ -16,6 +18,7 @@ type ChatStoreType = {
 };
 
 const initialState = {
+  notifying: true,
   chatList: null,
   activeChat: null,
   newChat: null,
@@ -71,7 +74,13 @@ const useChatStoreBase = create<ChatStoreType>((set) => ({
       })
     );
   },
-
+  setNotifying: (value) => {
+    set(
+      produce<ChatStoreType>((state) => {
+        state.notifying = value;
+      })
+    );
+  },
   reset: () => {
     set(initialState);
   },

@@ -24,7 +24,8 @@ export default function DropdownChat() {
   }, [fetchChatList.isSuccess]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+  const notifying = useChatStore.useNotifying();
+  const setNotifying = useChatStore.useSetNotifying();
 
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);

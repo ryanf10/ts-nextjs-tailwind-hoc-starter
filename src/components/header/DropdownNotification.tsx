@@ -27,7 +27,8 @@ export default function DropdownNotification() {
   }, [fetchNotifications.isSuccess]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+  const notifying = useNotificationStore.useNotifying();
+  const setNotifying = useNotificationStore.useSetNotifying();
 
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
@@ -60,6 +61,7 @@ export default function DropdownNotification() {
       socket.off('notification', newNotificationEvent);
       socket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dropdownOpen, addOneNotification]);
 
   // close if the esc key is pressed

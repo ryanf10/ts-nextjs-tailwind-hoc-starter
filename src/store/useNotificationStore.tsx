@@ -5,6 +5,8 @@ import { create } from 'zustand';
 import { Notification } from '@/types/notification';
 
 type NotificationStoreType = {
+  notifying: boolean;
+  setNotifying: (value: boolean) => void;
   notifications: Array<Notification> | null;
   init: (data: Array<Notification>) => void;
   addOne: (data: Notification) => void;
@@ -12,6 +14,7 @@ type NotificationStoreType = {
 };
 
 const initialState = {
+  notifying: true,
   notifications: null,
 };
 
@@ -30,6 +33,13 @@ const useNotificationsBase = create<NotificationStoreType>((set) => ({
         if (state.notifications) {
           state.notifications.unshift(data);
         }
+      })
+    );
+  },
+  setNotifying: (value) => {
+    set(
+      produce<NotificationStoreType>((state) => {
+        state.notifying = value;
       })
     );
   },
