@@ -106,18 +106,6 @@ export default function ChatPage() {
         {
           onSuccess: () => {
             resetField('message');
-            if (activeChat.isNewChat) {
-              // const newChat = {
-              //   ...activeChat,
-              //   id: data.data.chatId,
-              //   isNewChat: false,
-              //   lastMessage: data.data.message,
-              //   lastMessageAt: data.data.createdAt,
-              // };
-              // removeAndSaveNewChat(newChat);
-              // setActiveChat(newChat);
-              // setNewChat(null);
-            }
           },
         }
       );
@@ -206,6 +194,7 @@ export default function ChatPage() {
               </div>
             </div>
 
+            {/*  message box*/}
             <div className='overflow-style-none relative w-full overflow-x-scroll md:w-2/3'>
               {activeChat?.id && (
                 <div className='bg-graydark flex w-full cursor-pointer items-center space-x-3 px-2.5 py-3 md:hidden'>
@@ -339,8 +328,6 @@ export default function ChatPage() {
                     </div>
                   </form>
                 </FormProvider>
-
-                {/*  message box*/}
               </div>
             </div>
           </div>

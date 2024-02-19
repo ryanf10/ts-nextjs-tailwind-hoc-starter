@@ -14,7 +14,6 @@ type ChatStoreType = {
   setActiveChat: (value: Chat | null) => void;
   newChat: (Chat & { isNewChat?: boolean }) | null;
   setNewChat: (value: (Chat & { isNewChat?: boolean }) | null) => void;
-  removeAndSaveNewChat: (newChatData: Chat & { isNewChat?: boolean }) => void;
   addOneChatFromSocket: (newChatData: Chat & { isNewChat?: boolean }) => void;
   newChatMessageFromSocket: Array<ChatMessage>;
   addOneNewChatMessageFromSocket: (data: ChatMessage) => void;
@@ -55,19 +54,6 @@ const useChatStoreBase = create<ChatStoreType>((set) => ({
             );
           }
           state.newChat = value;
-        }
-      })
-    );
-  },
-  removeAndSaveNewChat: (newChatData) => {
-    set(
-      produce<ChatStoreType>((state) => {
-        if (state.chatList && state.newChat) {
-          state.chatList = state.chatList.filter(
-            (item) => item.id != state.newChat?.id
-          );
-          state.chatList.unshift(newChatData);
-          state.newChat = null;
         }
       })
     );
