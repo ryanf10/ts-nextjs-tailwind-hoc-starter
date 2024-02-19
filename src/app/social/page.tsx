@@ -27,7 +27,9 @@ export default function SocialPage() {
     >({
       queryKey: [userKey, ''],
       queryFn: searchUser,
-    })
+    }),
+    {},
+    { hideSuccess: true }
   );
   return (
     <>
