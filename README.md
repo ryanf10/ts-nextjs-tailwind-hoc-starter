@@ -1,4 +1,4 @@
-# Next.js + Tailwind CSS + HOC Auth + TypeScript Starter and Boilerplate
+# Next.js + Tailwind CSS + HOC Auth + TypeScript Starter and Boilerplate with Realtime Chat & Notification
 
 <div align="center">
   <h2>🔋 ts-nextjs-tailwind-hoc-starter</h2>
@@ -29,6 +29,8 @@ This repository is 🔋 battery packed with:
 - 👀 Open Graph Helper Function — Awesome open graph generated using [og](https://github.com/theodorusclarence/og), fork it and deploy!
 - 🗺 Site Map — Automatically generate sitemap.xml
 - 📦 Expansion Pack — Easily install common libraries, additional components, and configs.
+- 📡 Socket.io — Websocket with authentication and realtime notifications
+- ☁️ Chat — Implement a robust real-time chat feature using Socket.io, allowing seamless communication between users.
 
 See the 👉 [feature details and changelog](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter/blob/main/CHANGELOG.md) 👈 for more.
 
@@ -64,7 +66,7 @@ yarn install
 
 ### 3. Backend Dependencies
 
-This starter is using [Backend Project](https://github.com/ryanf10/nestjs-auth-mongodb) (NestJS JWT Authentication and Authorization using MongoDB + Realtime Notifications using WebSocket).
+This starter is using [Backend Project](https://github.com/ryanf10/nestjs-auth-mongodb) (NestJS JWT Authentication and Authorization using MongoDB + Realtime Chat & Notifications using WebSocket).
 
 ### 4. Run the development server
 
