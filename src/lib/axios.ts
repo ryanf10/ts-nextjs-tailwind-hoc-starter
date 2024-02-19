@@ -51,7 +51,7 @@ api.interceptors.response.use(
         api.defaults.headers.Authorization = `Bearer ${access_token}`;
         return api(error.config);
       }
-    } else if ((error.response?.data as UninterceptedApiError).message) {
+    } else if ((error.response?.data as UninterceptedApiError)?.message) {
       return Promise.reject({
         ...error,
         response: {

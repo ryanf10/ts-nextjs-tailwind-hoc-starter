@@ -2,10 +2,12 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import toast from 'react-hot-toast';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import axios from '@/lib/axios';
 import { getFromLocalStorage } from '@/lib/helper';
+import logger from '@/lib/logger';
 
 import TextButton from '@/components/buttons/TextButton';
 import PageLoader from '@/components/loader/PageLoader';
@@ -96,7 +98,8 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
             tempRole
           );
         } catch (err) {
-          localStorage.removeItem('token');
+          logger(err);
+          toast.error((err as Error).message);
         } finally {
           stopLoading();
         }
