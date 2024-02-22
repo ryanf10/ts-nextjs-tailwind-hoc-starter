@@ -8,7 +8,7 @@ const nextConfig = {
   swcMinify: true,
 
   images: {
-    domains: [new URL(process.env.NEXT_PUBLIC_BACKEND_URL).hostname],
+    domains: ['128.199.232.254', 'localhost'],
   },
 
   webpack(config) {
