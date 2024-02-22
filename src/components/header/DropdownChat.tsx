@@ -160,16 +160,17 @@ export default function DropdownChat() {
                 >
                   <div className='w-[50px] rounded-full'>
                     <NextImage
-                      width={50}
-                      height={50}
-                      src='/images/profile_picture.jpg'
-                      classNames={{ image: 'rounded-full' }}
+                      width={112}
+                      height={112}
+                      src={item.user1.picture ?? '/images/profile_picture.jpg'}
                       alt='User'
-                      className='w-[50px]'
+                      classNames={{
+                        image: 'rounded-full w-[50px] h-[50px] object-cover',
+                      }}
                     />
                   </div>
 
-                  <div className='w-full'>
+                  <div className='flex-grow'>
                     <h6 className='text-sm font-medium text-black dark:text-white'>
                       {item.user1.id !== user?.id
                         ? item.user1.username

@@ -43,8 +43,10 @@ export default function SocialPage() {
               <NextImage
                 width={80}
                 height={80}
-                src='/images/profile_picture.jpg'
-                classNames={{ image: 'rounded-full' }}
+                src={item.picture ?? '/images/profile_picture.jpg'}
+                classNames={{
+                  image: 'rounded-full w-[80px] h-[80px] object-cover',
+                }}
                 alt='User'
                 className='w-[80px]'
               />

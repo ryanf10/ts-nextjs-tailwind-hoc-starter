@@ -149,8 +149,16 @@ export default function ChatPage() {
                             <NextImage
                               width={50}
                               height={50}
-                              src='/images/profile_picture.jpg'
-                              classNames={{ image: 'rounded-full' }}
+                              src={
+                                (chat.user1.id !== user?.id
+                                  ? chat.user1.picture
+                                  : chat.user2.picture) ??
+                                '/images/profile_picture.jpg'
+                              }
+                              classNames={{
+                                image:
+                                  'rounded-full w-[50px] h-[50px] object-cover',
+                              }}
                               alt='User'
                               className='w-[50px]'
                             />
@@ -207,10 +215,17 @@ export default function ChatPage() {
                   />
                   <div className='relative h-[50px] w-[50px]'>
                     <NextImage
-                      width={50}
-                      height={50}
-                      src='/images/profile_picture.jpg'
-                      classNames={{ image: 'rounded-full' }}
+                      width={2000}
+                      height={2000}
+                      src={
+                        (activeChat.user1.id !== user?.id
+                          ? activeChat.user1.picture
+                          : activeChat.user2.picture) ??
+                        '/images/profile_picture.jpg'
+                      }
+                      classNames={{
+                        image: 'rounded-full w-[50px] h-[50px] object-cover',
+                      }}
                       alt='User'
                       className='w-[50px]'
                     />
