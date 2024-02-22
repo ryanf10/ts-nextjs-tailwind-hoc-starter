@@ -161,6 +161,7 @@ export default function ChatPage() {
                               }}
                               alt='User'
                               className='w-[50px]'
+                              unoptimized={true}
                             />
                           </div>
                         </div>
@@ -228,6 +229,7 @@ export default function ChatPage() {
                       }}
                       alt='User'
                       className='w-[50px]'
+                      unoptimized={true}
                     />
                   </div>
                   <div className='flex-1'>

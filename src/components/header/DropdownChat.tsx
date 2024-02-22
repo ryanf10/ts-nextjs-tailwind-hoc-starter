@@ -162,11 +162,16 @@ export default function DropdownChat() {
                     <NextImage
                       width={112}
                       height={112}
-                      src={item.user1.picture ?? '/images/profile_picture.jpg'}
+                      src={
+                        (item.user1.id !== user?.id
+                          ? item.user1.picture
+                          : item.user2.picture) ?? '/images/profile_picture.jpg'
+                      }
                       alt='User'
                       classNames={{
                         image: 'rounded-full w-[50px] h-[50px] object-cover',
                       }}
+                      unoptimized={false}
                     />
                   </div>
 

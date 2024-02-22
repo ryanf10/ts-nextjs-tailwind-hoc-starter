@@ -49,6 +49,7 @@ export default function SocialPage() {
                 }}
                 alt='User'
                 className='w-[80px]'
+                unoptimized={true}
               />
             </div>
             <div className='ml-5'>

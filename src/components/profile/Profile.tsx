@@ -54,6 +54,7 @@ function Profile() {
                 image:
                   'h-28 w-28 rounded-full object-cover sm:h-[9.25rem] sm:w-[9.25rem]',
               }}
+              unoptimized={true}
             />
 
             <label

@@ -78,6 +78,7 @@ export default function DropdownUser() {
             src={user.picture ?? '/images/profile_picture.jpg'}
             alt='User'
             classNames={{ image: 'rounded-full w-12 h-12 object-cover' }}
+            unoptimized={true}
           />
         </span>
 
