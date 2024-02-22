@@ -6,6 +6,7 @@ export type User = {
   username: string;
   roles: Array<Role>;
   createdAt: string;
+  picture?: string;
 };
 
 export type AuthUser = User;

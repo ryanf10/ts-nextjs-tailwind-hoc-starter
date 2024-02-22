@@ -71,13 +71,13 @@ export default function DropdownUser() {
           <span className='block text-xs'>{role?.name}</span>
         </span>
 
-        <span className='h-12 w-12 rounded-full'>
+        <span className='rounded-full'>
           <NextImage
             width={112}
             height={112}
-            src='/images/profile_picture.jpg'
+            src={user.picture ?? '/images/profile_picture.jpg'}
             alt='User'
-            classNames={{ image: 'rounded-full' }}
+            classNames={{ image: 'rounded-full w-12 h-12 object-cover' }}
           />
         </span>
 

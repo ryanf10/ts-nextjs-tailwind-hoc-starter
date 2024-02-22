@@ -2,7 +2,12 @@
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 
+import {
+  UpdateProfilePictureParams,
+  useUpdateProfilePicture,
+} from '@/lib/api/user';
 import { cn } from '@/lib/utils';
+import useMutationToast from '@/hooks/toast/useMutationToast';
 
 import TextButton from '@/components/buttons/TextButton';
 import withAuth from '@/components/hoc/withAuth';
@@ -10,6 +15,7 @@ import NextImage from '@/components/NextImage';
 
 import useAuthStore from '@/store/useAuthStore';
 
+import { ApiResponse } from '@/types/api';
 import { Role } from '@/types/role';
 import { AuthUser } from '@/types/user';
 
@@ -19,6 +25,12 @@ function Profile() {
   const user = useAuthStore.useUser() as AuthUser;
   const activeRole = useAuthStore.useRole() as Role;
   const switchRole = useAuthStore.useSwitchRole();
+  const { mutate } = useMutationToast<
+    ApiResponse<AuthUser>,
+    UpdateProfilePictureParams
+  >(useUpdateProfilePicture());
+  const login = useAuthStore.useLogin();
+
   return (
     <div className='border-stroke shadow-default dark:border-strokedark dark:bg-boxdark overflow-hidden rounded-sm border bg-white'>
       <div className='h-35 md:h-65 relative z-20'>
@@ -34,12 +46,16 @@ function Profile() {
         <div className='-mt-22 h-30 max-w-30 sm:max-w-44 relative z-30 mx-auto w-full rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:p-3'>
           <div className='drop-shadow-2 relative'>
             <NextImage
-              src='/images/profile_picture.jpg'
-              width={160}
-              height={160}
+              src={user.picture ?? '/images/profile_picture.jpg'}
+              width={176}
+              height={176}
               alt='profile'
-              classNames={{ image: 'rounded-full' }}
+              classNames={{
+                image:
+                  'h-28 w-28 rounded-full object-cover sm:h-[9.25rem] sm:w-[9.25rem]',
+              }}
             />
+
             <label
               htmlFor='profile'
               className='h-8.5 w-8.5 bg-primary-600 absolute bottom-0 right-0 flex cursor-pointer items-center justify-center rounded-full text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2'
@@ -70,7 +86,22 @@ function Profile() {
                 name='profile'
                 id='profile'
                 className='sr-only'
-                disabled={true}
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    mutate(
+                      {
+                        picture: e.target.files,
+                      },
+                      {
+                        onSuccess: (res) => {
+                          login({
+                            ...res.data,
+                          });
+                        },
+                      }
+                    );
+                  }
+                }}
               />
             </label>
           </div>
