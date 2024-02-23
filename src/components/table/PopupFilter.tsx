@@ -2,6 +2,8 @@ import * as React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { FiChevronDown, FiFilter, FiX } from 'react-icons/fi';
 
+import { cn } from '@/lib/utils';
+
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import Checkbox from '@/components/forms/Checkbox';
@@ -24,12 +26,14 @@ export type PopupFilterProps<T extends Record<string, string[]>> = {
   }[];
   setFilterQuery: React.Dispatch<React.SetStateAction<T>>;
   title?: string;
+  buttonClassname?: string;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export default function PopupFilter<T extends Record<string, string[]>>({
   filterOption,
   setFilterQuery,
   title = 'Filter',
+  buttonClassname = '',
 }: PopupFilterProps<T>) {
   //#region  //*=========== Form ===========
   const methods = useForm({
@@ -68,7 +72,7 @@ export default function PopupFilter<T extends Record<string, string[]>>({
           size='sm'
           leftIcon={FiFilter}
           rightIcon={FiChevronDown}
-          className='bg-primary-100'
+          className={cn('bg-primary-100', buttonClassname)}
         >
           {title} {filter?.length > 0 && `(${filter.length})`}
         </Button>

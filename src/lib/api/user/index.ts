@@ -12,6 +12,27 @@ import {
 import { AuthUser, User } from '@/types/user';
 
 export const userKey = 'user';
+
+export const getAllUser: QueryFunction<
+  PaginatedApiResponse<Array<User>>
+> = async ({ queryKey }) => {
+  const [_, url] = queryKey;
+  const response = await axios.get<
+    ApiResponse<
+      {
+        users: Array<User>;
+      } & BasePaginationResponseField
+    >
+  >(url as string);
+
+  const { users, ...rest } = response.data.data;
+  const mockResponse: PaginatedApiResponse<Array<User>> = {
+    ...rest,
+    data: users,
+    statusCode: response.data.statusCode,
+  };
+  return mockResponse;
+};
 export const searchUser: QueryFunction<
   PaginatedApiResponse<Array<Omit<User, 'email' | 'roles'>>>
 > = async ({ queryKey }) => {
