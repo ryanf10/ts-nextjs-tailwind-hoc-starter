@@ -3,18 +3,36 @@ import { AxiosError } from 'axios';
 
 import axios from '@/lib/axios';
 
-import { ApiError, ApiResponse } from '@/types/api';
+import {
+  ApiError,
+  ApiResponse,
+  BasePaginationResponseField,
+  PaginatedApiResponse,
+} from '@/types/api';
 import { AuthUser, User } from '@/types/user';
 
 export const userKey = 'user';
 export const searchUser: QueryFunction<
-  ApiResponse<Array<Omit<User, 'email' | 'roles'>>>
+  PaginatedApiResponse<Array<Omit<User, 'email' | 'roles'>>>
 > = async ({ queryKey }) => {
-  const [_, keyword] = queryKey;
+  const [_, url] = queryKey;
   const response = await axios.get<
-    ApiResponse<Array<Omit<User, 'email' | 'roles'>>>
-  >(`/user/search?keyword=${keyword}`);
-  return response.data;
+    ApiResponse<
+      {
+        users: Array<Omit<User, 'email' | 'roles'>>;
+      } & BasePaginationResponseField
+    >
+  >(url as string);
+
+  const { users, ...rest } = response.data.data;
+  const mockResponse: PaginatedApiResponse<
+    Array<Omit<User, 'email' | 'roles'>>
+  > = {
+    ...rest,
+    data: users,
+    statusCode: response.data.statusCode,
+  };
+  return mockResponse;
 };
 
 export type UpdateProfilePictureParams = {

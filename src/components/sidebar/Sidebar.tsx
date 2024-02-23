@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { FiUsers } from 'react-icons/fi';
+import { FiShare2, FiUsers } from 'react-icons/fi';
 
 import NextImage from '@/components/NextImage';
 import SidebarLink from '@/components/sidebar/SidebarLink';
@@ -186,12 +186,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('social') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <FiUsers />
+                  <FiShare2 />
                   Social
                 </Link>
               </li>
               {/* <!-- Menu Item Social --> */}
-              {/* <!-- Menu Item Social --> */}
+              {/* <!-- Menu Item Manage User --> */}
+              {activeRole?.name == 'admin' && (
+                <li>
+                  <Link
+                    href='/manage-user'
+                    className={`text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out ${
+                      pathname.includes('manage-user') &&
+                      'bg-graydark dark:bg-meta-4'
+                    }`}
+                  >
+                    <FiUsers />
+                    Manage User
+                  </Link>
+                </li>
+              )}
+              {/* <!-- Menu Item Manage User --> */}
+              {/* <!-- Menu Item Chat --> */}
               <li>
                 <Link
                   href='/chat'
@@ -227,7 +243,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Chat
                 </Link>
               </li>
-              {/* <!-- Menu Item Social --> */}
+              {/* <!-- Menu Item Chat --> */}
               {/* <!-- Menu Item Profile --> */}
               <li>
                 <Link
