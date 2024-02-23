@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 
 import Filter from '@/components/table/Filter';
 import PaginationControl from '@/components/table/PaginationControl';
+import PopupFilter, { PopupFilterProps } from '@/components/table/PopupFilter';
 import TOption from '@/components/table/TOption';
 
 import { PaginatedApiResponse } from '@/types/api';
@@ -30,7 +31,8 @@ type SetServerCardState = {
 
 type ServerCardProps<T extends object> = {
   card: React.ReactNode;
-  header?: React.ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  popUpFilterProps?: Omit<PopupFilterProps<any, T>, 'table'>;
   isLoading: boolean;
   response: PaginatedApiResponse<T[]> | undefined;
   data: T[];
@@ -42,7 +44,7 @@ type ServerCardProps<T extends object> = {
 export default function ServerCard<T extends object>({
   card: Card,
   className,
-  header: Header,
+  popUpFilterProps,
   isLoading,
   response,
   data,
@@ -83,7 +85,15 @@ export default function ServerCard<T extends object>({
       >
         {withFilter && <Filter table={table} />}
         <div className='flex items-center gap-3'>
-          {Header}
+          {popUpFilterProps && (
+            <PopupFilter
+              table={table}
+              filterOption={popUpFilterProps.filterOption}
+              setFilterQuery={popUpFilterProps.setFilterQuery}
+              title={popUpFilterProps.title}
+              buttonClassname={popUpFilterProps.buttonClassname}
+            />
+          )}
           <TOption
             icon={<FiList />}
             value={table.getState().pagination.pageSize}

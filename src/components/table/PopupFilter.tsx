@@ -1,3 +1,4 @@
+import { Table } from '@tanstack/react-table';
 import * as React from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { FiChevronDown, FiFilter, FiX } from 'react-icons/fi';
@@ -15,7 +16,8 @@ import {
 } from '@/components/popover/Popover';
 import Typography from '@/components/typography/Typography';
 
-export type PopupFilterProps<T extends Record<string, string[]>> = {
+export type PopupFilterProps<T extends Record<string, string[]>, U> = {
+  table: Table<U>;
   filterOption: {
     id: Extract<keyof T, string>;
     name: string;
@@ -27,14 +29,15 @@ export type PopupFilterProps<T extends Record<string, string[]>> = {
   setFilterQuery: React.Dispatch<React.SetStateAction<T>>;
   title?: string;
   buttonClassname?: string;
-} & React.ComponentPropsWithoutRef<'div'>;
+};
 
-export default function PopupFilter<T extends Record<string, string[]>>({
+export default function PopupFilter<T extends Record<string, string[]>, U>({
+  table,
   filterOption,
   setFilterQuery,
   title = 'Filter',
   buttonClassname = '',
-}: PopupFilterProps<T>) {
+}: PopupFilterProps<T, U>) {
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: 'onTouched',
@@ -60,7 +63,8 @@ export default function PopupFilter<T extends Record<string, string[]>>({
       }, defaultFilter) ?? defaultFilter;
 
     setFilterQuery(parsedFilter);
-  }, [filter, filterOption, setFilterQuery]);
+    table.setPageIndex(0);
+  }, [filter, filterOption, setFilterQuery, table]);
 
   const resetFilter = () => setValue('filter[]', []);
 

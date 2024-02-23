@@ -12,7 +12,7 @@ import useQueryToast from '@/hooks/toast/useQueryToast';
 import useServerTable from '@/hooks/useServerTable';
 
 import withAuth from '@/components/hoc/withAuth';
-import PopupFilter, { PopupFilterProps } from '@/components/table/PopupFilter';
+import { PopupFilterProps } from '@/components/table/PopupFilter';
 import ServerTable from '@/components/table/ServerTable';
 
 import { ApiError, PaginatedApiResponse } from '@/types/api';
@@ -21,6 +21,7 @@ import { User } from '@/types/user';
 export default withAuth(SocialPage, 'all', ['admin']);
 function SocialPage() {
   const { tableState, setTableState } = useServerTable<User>();
+
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'username',
@@ -68,20 +69,22 @@ function SocialPage() {
   const [filterQuery, setFilterQuery] = useState<{ role: string[] }>({
     role: [],
   });
-  const filterOption: PopupFilterProps<{ role: string[] }>['filterOption'] =
-    React.useMemo(
-      () => [
-        {
-          id: 'role',
-          name: 'Role',
-          options: [
-            { id: 'admin', name: 'Admin' },
-            { id: 'user', name: 'User' },
-          ],
-        },
-      ],
-      []
-    );
+  const filterOption: PopupFilterProps<
+    { role: string[] },
+    User
+  >['filterOption'] = React.useMemo(
+    () => [
+      {
+        id: 'role',
+        name: 'Role',
+        options: [
+          { id: 'admin', name: 'Admin' },
+          { id: 'user', name: 'User' },
+        ],
+      },
+    ],
+    []
+  );
 
   const url = buildPaginatedTableURL({
     baseUrl: '/user/all',
@@ -106,16 +109,14 @@ function SocialPage() {
       <div className='w-full'>
         <ServerTable
           columns={columns}
-          header={
-            <PopupFilter
-              filterOption={filterOption}
-              setFilterQuery={setFilterQuery}
-              buttonClassname={cn(
-                'rounded-md px-5 text-sm font-semibold',
-                'h-[2.25rem] py-0 md:h-[2.5rem]'
-              )}
-            />
-          }
+          popUpFilterProps={{
+            filterOption: filterOption,
+            setFilterQuery: setFilterQuery,
+            buttonClassname: cn(
+              'rounded-md px-5 text-sm font-semibold',
+              'h-[2.25rem] py-0 md:h-[2.5rem]'
+            ),
+          }}
           response={data}
           data={data?.data ?? []}
           isLoading={isPending}
