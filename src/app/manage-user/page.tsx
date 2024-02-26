@@ -18,8 +18,8 @@ import ServerTable from '@/components/table/ServerTable';
 import { ApiError, PaginatedApiResponse } from '@/types/api';
 import { User } from '@/types/user';
 
-export default withAuth(SocialPage, 'all', ['admin']);
-function SocialPage() {
+export default withAuth(ManageUserPage, 'all', ['admin']);
+function ManageUserPage() {
   const { tableState, setTableState } = useServerTable<User>();
 
   const columns: ColumnDef<User>[] = [
