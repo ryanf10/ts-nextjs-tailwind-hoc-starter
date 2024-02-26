@@ -39,6 +39,7 @@ export default function SocialPage() {
     >({
       queryKey: [userKey, url],
       queryFn: searchUser,
+      staleTime: Infinity, // for keeping fetched page data
     }),
     {},
     { hideSuccess: true }

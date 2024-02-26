@@ -1,5 +1,5 @@
 'use client';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
@@ -98,7 +98,7 @@ function SocialPage() {
     useQuery<PaginatedApiResponse<Array<User>>, AxiosError<ApiError>>({
       queryKey: [userKey, url],
       queryFn: getAllUser,
-      placeholderData: keepPreviousData,
+      // staleTime: Infinity, // for keeping fetched page data
     }),
     {},
     { hideSuccess: true }
