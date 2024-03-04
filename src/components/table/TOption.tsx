@@ -18,7 +18,7 @@ export default function TOption({
   value,
 }: TOptionProps) {
   return (
-    <div className='relative flex items-center'>
+    <div className='relative flex items-center dark:text-gray-500'>
       {Icon && (
         <div className='text-typo-secondary pointer-events-none absolute inset-y-0 left-3 flex items-center'>
           {Icon}

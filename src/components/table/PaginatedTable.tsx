@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 
 import Filter from '@/components/table/Filter';
 import PaginationControl from '@/components/table/PaginationControl';
+import PopupFilter, { PopupFilterProps } from '@/components/table/PopupFilter';
 import TBody from '@/components/table/TBody';
 import THead from '@/components/table/THead';
 import TOption from '@/components/table/TOption';
@@ -22,6 +23,8 @@ import TOption from '@/components/table/TOption';
 type PaginatedTableProps<T extends object> = {
   data: T[];
   columns: ColumnDef<T>[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  popUpFilterProps?: Omit<PopupFilterProps<any, T>, 'table'>;
   pageSize?: number;
   omitSort?: boolean;
   withFilter?: boolean;
@@ -30,6 +33,7 @@ type PaginatedTableProps<T extends object> = {
 export default function PaginatedTable<T extends object>({
   className,
   columns,
+  popUpFilterProps,
   data,
   pageSize = 10,
   omitSort = false,
@@ -84,7 +88,16 @@ export default function PaginatedTable<T extends object>({
         )}
       >
         {withFilter && <Filter table={table} />}
-        <div className='flex gap-3'>
+        <div className='flex items-center gap-3'>
+          {popUpFilterProps && (
+            <PopupFilter
+              table={table}
+              filterOption={popUpFilterProps.filterOption}
+              setFilterQuery={popUpFilterProps.setFilterQuery}
+              title={popUpFilterProps.title}
+              buttonClassname={popUpFilterProps.buttonClassname}
+            />
+          )}
           <TOption
             icon={<FiList className='text-typo-secondary' />}
             value={table.getState().pagination.pageSize}

@@ -6,17 +6,21 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
 import Filter from '@/components/table/Filter';
+import PopupFilter, { PopupFilterProps } from '@/components/table/PopupFilter';
 import TBody from '@/components/table/TBody';
 import THead from '@/components/table/THead';
 
 type TableProps<T extends object> = {
   data: T[];
   columns: ColumnDef<T>[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  popUpFilterProps?: Omit<PopupFilterProps<any, T>, 'table'>;
   omitSort?: boolean;
   withFilter?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
@@ -24,6 +28,7 @@ type TableProps<T extends object> = {
 export default function Table<T extends object>({
   className,
   columns,
+  popUpFilterProps,
   data,
   omitSort = false,
   withFilter = false,
@@ -52,7 +57,23 @@ export default function Table<T extends object>({
 
   return (
     <div className={cn('flex flex-col', className)} {...rest}>
-      {withFilter && <Filter table={table} />}
+      <div
+        className={clsx(
+          'flex flex-col items-stretch gap-3 sm:flex-row',
+          withFilter ? 'sm:justify-between' : 'sm:justify-end'
+        )}
+      >
+        {withFilter && <Filter table={table} />}
+        {popUpFilterProps && (
+          <PopupFilter
+            table={table}
+            filterOption={popUpFilterProps.filterOption}
+            setFilterQuery={popUpFilterProps.setFilterQuery}
+            title={popUpFilterProps.title}
+            buttonClassname={popUpFilterProps.buttonClassname}
+          />
+        )}
+      </div>
       <div className='-mx-4 -my-2 mt-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
         <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
           <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg'>

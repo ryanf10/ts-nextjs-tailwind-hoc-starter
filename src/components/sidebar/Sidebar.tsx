@@ -361,7 +361,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className='mb-5.5 mt-4 flex flex-col gap-2.5 pl-6'>
                           <li>
                             <SidebarLinkGroupItem
-                              href='/components#alert'
+                              href='/sandbox/components#alert'
                               isActive={pathname === '/ui/alerts'}
                             >
                               Alerts
@@ -369,7 +369,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <SidebarLinkGroupItem
-                              href='/components#button'
+                              href='/sandbox/components#button'
                               isActive={pathname === '/ui/alerts'}
                             >
                               Buttons

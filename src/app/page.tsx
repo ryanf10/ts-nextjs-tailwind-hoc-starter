@@ -49,6 +49,25 @@ export default function HomePage() {
             <AuthButton />
           </div>
           <div className='mt-6'>
+            <Typography variant='h5'>Sandbox</Typography>
+            <div className='mt-2 flex flex-wrap justify-center gap-2'>
+              <ButtonLink
+                href='/sandbox/components'
+                className='mt-2'
+                variant='outline'
+              >
+                Components
+              </ButtonLink>
+              <ButtonLink
+                href='/sandbox/table'
+                className='mt-2'
+                variant='outline'
+              >
+                Table
+              </ButtonLink>
+            </div>
+          </div>
+          <div className='mt-6'>
             <Typography variant='h2'>Backend Dependency</Typography>
             <ButtonLink
               href='https://github.com/ryanf10/nestjs-auth-mongodb'
