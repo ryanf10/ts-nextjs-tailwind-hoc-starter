@@ -58,9 +58,10 @@ export default function ServerTable<T extends object>({
   withFilter = false,
   ...rest
 }: ServerTableProps<T>) {
-  const lastPage = response
-    ? Math.ceil(response.total / response.page_size)
-    : 0;
+  const lastPage =
+    response && response.page_size
+      ? Math.ceil(response.total / response.page_size)
+      : 0;
   const table = useReactTable({
     data: data,
     columns,
