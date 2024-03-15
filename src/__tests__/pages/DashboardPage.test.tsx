@@ -1,14 +1,15 @@
 import { act, render, renderHook, screen } from '@testing-library/react';
+import mockRouter from 'next-router-mock';
 
 import useAuthStore from '@/store/useAuthStore';
 
 import Dashboard from '@/app/dashboard/page';
 
-jest.mock('@/components/hoc/withAuth', () => {
-  return jest.fn().mockImplementation((Component) => Component);
-});
 describe('Dashboard', () => {
   it('renders the Components', () => {
+    // Set the initial url:
+    mockRouter.push('/');
+
     const { result } = renderHook(() => useAuthStore());
     const { login } = result.current;
     act(() => {

@@ -118,6 +118,7 @@ function Profile() {
             {user.roles.map((role) => {
               return (
                 <TextButton
+                  id={`change_role_to_${role.name}`}
                   variant='basic'
                   key={role.id}
                   className={cn(
