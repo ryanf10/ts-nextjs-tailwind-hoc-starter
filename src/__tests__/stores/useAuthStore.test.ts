@@ -2,6 +2,10 @@ import { act, renderHook } from '@testing-library/react';
 
 import useAuthStore from '@/store/useAuthStore';
 
+jest.mock('@/lib/api/auth/logout', () => ({
+  callLogout: jest.fn(),
+}));
+
 describe('AuthStore', () => {
   it('should initialize with default values', () => {
     const { result } = renderHook(() => useAuthStore());
@@ -39,11 +43,11 @@ describe('AuthStore', () => {
     expect(isAuthenticated).toBeTruthy();
   });
 
-  it('should logout and clear user and role', () => {
+  it('should logout and clear user and role', async () => {
     const { result } = renderHook(() => useAuthStore());
 
-    act(() => {
-      result.current.logout();
+    await act(async () => {
+      await result.current.logout();
     });
 
     const { user, role, isAuthenticated } = result.current;
