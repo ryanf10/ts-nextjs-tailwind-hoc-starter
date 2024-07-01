@@ -49,7 +49,7 @@ export default function DropdownUser() {
     return () => document.removeEventListener('keydown', keyHandler);
   });
 
-  const doLogout = () => {
+  const doLogout = async () => {
     logout();
     resetNotifications();
     resetChat();

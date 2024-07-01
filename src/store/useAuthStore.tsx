@@ -2,6 +2,9 @@ import { createSelectorHooks } from 'auto-zustand-selectors-hook';
 import { produce } from 'immer';
 import { create } from 'zustand';
 
+import { callLogout } from '@/lib/api/auth/logout';
+import { deleteCookie } from '@/lib/cookie';
+
 import { Role } from '@/types/role';
 import { AuthUser } from '@/types/user';
 
@@ -38,9 +41,9 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
       })
     );
   },
-  logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh_token');
+  logout: async () => {
+    await deleteCookie(['refresh_token', 'access_token']);
+    await callLogout();
     localStorage.removeItem('role');
     set(
       produce<AuthStoreType>((state) => {

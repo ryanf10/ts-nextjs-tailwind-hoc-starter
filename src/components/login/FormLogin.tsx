@@ -48,8 +48,6 @@ function FormLogin() {
       login({
         ...fetchProfile.data.data,
       });
-      localStorage.setItem('token', token);
-      localStorage.setItem('refresh_token', refreshToken);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, fetchProfile.isSuccess]);

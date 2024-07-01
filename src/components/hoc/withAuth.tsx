@@ -1,4 +1,5 @@
 'use client';
+import { AxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
@@ -6,6 +7,7 @@ import toast from 'react-hot-toast';
 import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import axios from '@/lib/axios';
+import { deleteCookie, getCookie } from '@/lib/cookie';
 import { getFromLocalStorage } from '@/lib/helper';
 import logger from '@/lib/logger';
 
@@ -62,16 +64,16 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
     //#region  //*=========== STORE ===========
     const isAuthenticated = useAuthStore.useIsAuthenticated();
     const isLoading = useAuthStore.useIsLoading();
-    const login = useAuthStore.useLogin();
     const logout = useAuthStore.useLogout();
+    const login = useAuthStore.useLogin();
     const stopLoading = useAuthStore.useStopLoading();
     const user = useAuthStore.useUser();
     const activeRole = useAuthStore.useRole();
     //#endregion  //*======== STORE ===========
 
-    const checkAuth = React.useCallback(() => {
-      const token = getFromLocalStorage('token');
+    const checkAuth = React.useCallback(async () => {
       const roleId = getFromLocalStorage('role');
+      const token = await getCookie('refresh_token');
       if (!token) {
         isAuthenticated && logout();
         stopLoading();
@@ -79,9 +81,7 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
       }
       const loadUser = async () => {
         try {
-          const res = await axios.get<ApiResponse<AuthUser>>('/auth/profile', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const res = await axios.get<ApiResponse<AuthUser>>('/auth/profile');
 
           let tempRole = res.data.data.roles[0];
           const roleItem = res.data.data.roles.find(
@@ -99,7 +99,16 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
           );
         } catch (err) {
           logger(err);
-          toast.error((err as Error).message);
+          const error = err as Error;
+          toast.error(error.message);
+          if (error instanceof AxiosError) {
+            if (
+              error.response?.data.statusCode === 401 &&
+              error.response?.data.path === '/auth/refresh'
+            ) {
+              deleteCookie(['refresh_token', 'access_token']);
+            }
+          }
         } finally {
           stopLoading();
         }
@@ -148,9 +157,9 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
         );
         if (!find) {
           return (
-            <main>
-              <section className='bg-white'>
-                <div className='layout flex min-h-screen flex-col items-center justify-center text-center text-black'>
+            <main className='dark:bg-dark fixed inset-0 z-[999999] bg-white'>
+              <section className=''>
+                <div className='layout flex min-h-screen flex-col items-center justify-center text-center text-black dark:text-white'>
                   <RiAlarmWarningFill
                     size={60}
                     className='drop-shadow-glow animate-flicker text-red-500'
@@ -158,7 +167,7 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
                   <h1 className='mt-8 text-4xl md:text-6xl'>
                     Oops, something went wrong!
                   </h1>
-                  <TextButton variant='basic' className='mt-4'>
+                  <TextButton variant='basic' className='mt-4 dark:text-white'>
                     Forbidden Access
                   </TextButton>
                 </div>

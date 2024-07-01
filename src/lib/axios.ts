@@ -12,12 +12,6 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(function (config) {
-  if (!config.headers.Authorization) {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = token ? `Bearer ${token}` : '';
-    }
-  }
   return config;
 });
 
@@ -37,18 +31,12 @@ api.interceptors.response.use(
           return Promise.reject(error);
         }
         error.config.headers['x-no-retry'] = 'true';
-        const res = await api.get('/auth/refresh', {
+        await api.get('/auth/refresh', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
             'x-no-retry': 'true',
           },
         });
 
-        const { access_token } = res.data.data;
-        localStorage.setItem('token', access_token);
-
-        error.config.headers.Authorization = `Bearer ${access_token}`;
-        api.defaults.headers.Authorization = `Bearer ${access_token}`;
         return api(error.config);
       }
     } else if ((error.response?.data as UninterceptedApiError)?.message) {
