@@ -28,6 +28,7 @@ type PaginatedTableProps<T extends object> = {
   pageSize?: number;
   omitSort?: boolean;
   withFilter?: boolean;
+  withOption?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export default function PaginatedTable<T extends object>({
@@ -38,6 +39,7 @@ export default function PaginatedTable<T extends object>({
   pageSize = 10,
   omitSort = false,
   withFilter = false,
+  withOption = false,
   ...rest
 }: PaginatedTableProps<T>) {
   const [globalFilter, setGlobalFilter] = React.useState('');
@@ -98,19 +100,21 @@ export default function PaginatedTable<T extends object>({
               buttonClassname={popUpFilterProps.buttonClassname}
             />
           )}
-          <TOption
-            icon={<FiList className='text-typo-secondary' />}
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-          >
-            {[5, 10, 25].map((page) => (
-              <option key={page} value={page}>
-                {page} Entries
-              </option>
-            ))}
-          </TOption>
+          {withOption && (
+            <TOption
+              icon={<FiList className='text-typo-secondary' />}
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[5, 10, 25].map((page) => (
+                <option key={page} value={page}>
+                  {page} Entries
+                </option>
+              ))}
+            </TOption>
+          )}
         </div>
       </div>
       <div className='-mx-4 -my-2 mt-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>

@@ -190,6 +190,7 @@ export default function ComponentPage() {
               setTableState={setTableState}
               className='mt-8'
               withFilter
+              withOption
             />
 
             <Typography
@@ -217,6 +218,7 @@ export default function ComponentPage() {
                 unpaginatedData?.data ? filterData(unpaginatedData.data) : []
               }
               withFilter
+              withOption
             />
 
             <Typography

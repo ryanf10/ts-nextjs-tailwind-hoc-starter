@@ -43,6 +43,7 @@ type ServerTableProps<T extends object> = {
   setTableState: SetServerTableState;
   omitSort?: boolean;
   withFilter?: boolean;
+  withOption?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export default function ServerTable<T extends object>({
@@ -56,6 +57,7 @@ export default function ServerTable<T extends object>({
   setTableState,
   omitSort = false,
   withFilter = false,
+  withOption = false,
   ...rest
 }: ServerTableProps<T>) {
   const lastPage =
@@ -100,19 +102,21 @@ export default function ServerTable<T extends object>({
               buttonClassname={popUpFilterProps.buttonClassname}
             />
           )}
-          <TOption
-            icon={<FiList />}
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-          >
-            {[5, 10, 25].map((page) => (
-              <option key={page} value={page}>
-                {page} Entries
-              </option>
-            ))}
-          </TOption>
+          {withOption && (
+            <TOption
+              icon={<FiList />}
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[5, 10, 25].map((page) => (
+                <option key={page} value={page}>
+                  {page} Entries
+                </option>
+              ))}
+            </TOption>
+          )}
         </div>
       </div>
       <div className='-mx-4 -my-2 mt-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>

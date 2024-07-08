@@ -39,6 +39,7 @@ type ServerCardProps<T extends object> = {
   tableState: ServerCardState;
   setTableState: SetServerCardState;
   withFilter?: boolean;
+  withOption?: boolean;
 } & React.ComponentPropsWithoutRef<'div'>;
 
 export default function ServerCard<T extends object>({
@@ -51,6 +52,7 @@ export default function ServerCard<T extends object>({
   tableState,
   setTableState,
   withFilter = false,
+  withOption = false,
   ...rest
 }: ServerCardProps<T>) {
   const lastPage =
@@ -95,19 +97,21 @@ export default function ServerCard<T extends object>({
               buttonClassname={popUpFilterProps.buttonClassname}
             />
           )}
-          <TOption
-            icon={<FiList />}
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-          >
-            {[5, 10, 25].map((page) => (
-              <option key={page} value={page}>
-                {page} Entries
-              </option>
-            ))}
-          </TOption>
+          {withOption && (
+            <TOption
+              icon={<FiList />}
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[5, 10, 25].map((page) => (
+                <option key={page} value={page}>
+                  {page} Entries
+                </option>
+              ))}
+            </TOption>
+          )}
         </div>
       </div>
       <div className='flex flex-col'>
