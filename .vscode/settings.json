@@ -5,6 +5,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+  "prettier.configPath": ".prettierrc.js",
   // Tailwind CSS Autocomplete, add more if used in projects
   "tailwindCSS.classAttributes": [
     "class",
