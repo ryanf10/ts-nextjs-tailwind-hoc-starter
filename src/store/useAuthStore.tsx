@@ -17,13 +17,17 @@ type AuthStoreType = {
   logout: () => void;
   stopLoading: () => void;
   switchRole: (role: Role) => void;
+  reset: () => void;
 };
 
-const useAuthStoreBase = create<AuthStoreType>((set) => ({
+const initialState = {
   user: null,
   role: null,
   isAuthenticated: false,
   isLoading: true,
+};
+const useAuthStoreBase = create<AuthStoreType>((set) => ({
+  ...initialState,
   login: (user, preferedRole) => {
     let tempRole = user.roles[0];
     if (preferedRole) {
@@ -67,6 +71,9 @@ const useAuthStoreBase = create<AuthStoreType>((set) => ({
         state.role = role;
       })
     );
+  },
+  reset: () => {
+    set({ ...initialState });
   },
 }));
 

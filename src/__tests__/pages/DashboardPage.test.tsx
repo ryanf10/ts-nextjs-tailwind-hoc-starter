@@ -4,7 +4,9 @@ import mockRouter from 'next-router-mock';
 import useAuthStore from '@/store/useAuthStore';
 
 import Dashboard from '@/app/dashboard/page';
-
+jest.mock('@/components/hoc/withAuth', () => {
+  return jest.fn().mockImplementation((Component) => Component);
+});
 describe('Dashboard', () => {
   it('renders the Components', () => {
     // Set the initial url:

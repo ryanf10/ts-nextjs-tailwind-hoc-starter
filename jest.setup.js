@@ -25,10 +25,6 @@ jest.mock('next/navigation', () => {
   };
 });
 
-jest.mock('@/components/hoc/withAuth', () => {
-  return jest.fn().mockImplementation((Component) => Component);
-});
-
 jest.mock('next/headers', () => {
   return {
     cookies: () => ({
