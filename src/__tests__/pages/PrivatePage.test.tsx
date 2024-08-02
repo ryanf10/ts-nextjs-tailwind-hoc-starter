@@ -1,4 +1,5 @@
 import { render, renderHook, screen, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 
 import api from '@/lib/axios';
 import { getCookie } from '@/lib/cookie';
@@ -16,7 +17,7 @@ jest.mock('@/lib/cookie', () => ({
 describe('PrivatePage', () => {
   beforeEach(() => {
     const { result } = renderHook(() => useAuthStore());
-    waitFor(() => result.current.reset());
+    act(() => result.current.reset());
     jest.restoreAllMocks();
   });
 
