@@ -15,9 +15,7 @@ import useAuthStore from '@/store/useAuthStore';
 
 import ProfilePage from '@/app/profile/page';
 
-jest.mock('@/components/hoc/withAuth', () => {
-  return jest.fn().mockImplementation((Component) => Component);
-});
+jest.mock('@/components/hoc/withAuth');
 describe('Profile', () => {
   it('renders the Components', () => {
     const queryClient = new QueryClient();

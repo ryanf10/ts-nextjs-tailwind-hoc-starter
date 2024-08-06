@@ -4,9 +4,7 @@ import { render, screen } from '@testing-library/react';
 import mockRouter from 'next-router-mock';
 
 import HomePage from '@/app/page';
-jest.mock('@/components/hoc/withAuth', () => {
-  return jest.fn().mockImplementation((Component) => Component);
-});
+jest.mock('@/components/hoc/withAuth');
 describe('Homepage', () => {
   it('renders the Components', () => {
     // Set the initial url:

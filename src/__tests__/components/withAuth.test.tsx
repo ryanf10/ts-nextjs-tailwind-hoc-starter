@@ -44,6 +44,7 @@ describe('PrivatePage', () => {
     const WrappedComponent = withAuth(Component, 'all', ['admin']);
     render(<WrappedComponent />);
     await waitFor(() => {
+      expect(getCookie).toHaveBeenCalledWith('refresh_token');
       expect(screen.getByText('Admin Only')).toBeInTheDocument();
     });
   });
